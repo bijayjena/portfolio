@@ -92,7 +92,7 @@ export const skillsData: Skill[] = [
   // AI & LLMs
   {
     name: "OpenAI API",
-    icon: "https://cdn.simpleicons.org/openai",
+    icon: "https://openai.com/favicon.ico",
     category: "AI & LLMs",
     analysis: "Integrated into Medbot for natural language understanding and generating medical responses.",
     relatedProjects: ["Medbot - AI Medical Assistant"]
