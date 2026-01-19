@@ -1,156 +1,95 @@
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Progress } from "@/components/ui/progress";
-import { useEffect, useState, useRef } from "react";
 import { motion } from "framer-motion";
 import { AnimatedSection, FadeIn, StaggerContainer, StaggerItem } from "./AnimatedSection";
-
-const skillCategories = [
-  {
-    title: "Frontend",
-    skills: [
-      { name: "React.js", level: 95 },
-      { name: "React Native", level: 85 },
-      { name: "Redux Toolkit", level: 90 },
-      { name: "Expo", level: 80 },
-      { name: "Material UI", level: 85 },
-    ],
-  },
-  {
-    title: "Backend",
-    skills: [
-      { name: "Node.js", level: 85 },
-      { name: "Express", level: 80 },
-      { name: "Firebase", level: 90 },
-      { name: "MongoDB", level: 75 },
-      { name: "REST APIs", level: 90 },
-    ],
-  },
-  {
-    title: "AI & LLMs",
-    skills: [
-      { name: "Generative AI", level: 85 },
-      { name: "LLMs", level: 80 },
-      { name: "Prompt Engineering", level: 90 },
-      { name: "Speech Transcription", level: 75 },
-      { name: "NLP Chatbots", level: 80 },
-      { name: "OpenAI APIs", level: 85 },
-    ],
-  },
-  {
-    title: "DevOps & Tools",
-    skills: [
-      { name: "Git", level: 90 },
-      { name: "Postman", level: 85 },
-      { name: "VS Code", level: 95 },
-      { name: "Figma", level: 70 },
-    ],
-  },
-  {
-    title: "Architecture",
-    skills: [
-      { name: "HLD/LLD", level: 80 },
-      { name: "Monorepo/Multi-repo", level: 85 },
-      { name: "Module Federation", level: 80 },
-      { name: "Micro-frontend", level: 85 },
-    ],
-  },
-  {
-    title: "Data & Analytics",
-    skills: [
-      { name: "Python", level: 75 },
-      { name: "SQL", level: 80 },
-      { name: "Power BI", level: 70 },
-      { name: "Excel", level: 85 },
-      { name: "Spark", level: 65 },
-      { name: "Hadoop", level: 60 },
-      { name: "Snowflake", level: 65 },
-      { name: "Hive", level: 60 },
-    ],
-  },
-];
+import ScrollingTechIcons from "./ScrollingTechIcons";
+import { skillsData } from "@/data/skillsData";
 
 const Skills = () => {
-  const [animatedSkills, setAnimatedSkills] = useState<{ [key: string]: number }>({});
-  const [isVisible, setIsVisible] = useState(false);
-  const sectionRef = useRef<HTMLElement>(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting && !isVisible) {
-          setIsVisible(true);
-          // Animate all skills progressively
-          skillCategories.forEach((category, catIndex) => {
-            category.skills.forEach((skill, skillIndex) => {
-              const key = `${category.title}-${skill.name}`;
-              const delay = catIndex * 100 + skillIndex * 50;
-              setTimeout(() => {
-                setAnimatedSkills((prev) => ({ ...prev, [key]: skill.level }));
-              }, delay);
-            });
-          });
-        }
-      },
-      { threshold: 0.2 }
-    );
-
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
-    }
-
-    return () => observer.disconnect();
-  }, [isVisible]);
+  // Group skills by category
+  const categories = Array.from(new Set(skillsData.map((s) => s.category)));
 
   return (
-    <AnimatedSection className="py-12 md:py-20 px-4">
-      <div className="container mx-auto max-w-6xl" ref={sectionRef as any}>
+    <AnimatedSection className="py-12 md:py-24 px-4 bg-background/50">
+      <div className="container mx-auto max-w-7xl">
         <FadeIn>
-          <h2 className="text-4xl font-bold mb-12 text-center">
-            Technical <span className="gradient-text">Skills</span>
-          </h2>
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold mb-4">
+              Technical <span className="gradient-text">Excellence</span>
+            </h2>
+            <p className="text-muted-foreground max-w-2xl mx-auto">
+              A comprehensive toolset leveraged to build scalable, high-performance applications.
+            </p>
+          </div>
         </FadeIn>
-        
-        <StaggerContainer className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {skillCategories.map((category, index) => (
-            <StaggerItem key={index}>
-              <motion.div
-                whileHover={{ y: -4, scale: 1.02 }}
-                transition={{ duration: 0.2 }}
-              >
-                <Card className="p-6 hover:shadow-lg transition-all duration-300 h-full">
-                  <h3 className="text-xl font-bold mb-4 text-primary">{category.title}</h3>
-                  <div className="space-y-4">
-                    {category.skills.map((skill, i) => {
-                      const key = `${category.title}-${skill.name}`;
-                      const animatedValue = animatedSkills[key] || 0;
-                      
-                      return (
-                        <div key={i} className="space-y-2">
-                          <div className="flex justify-between items-center">
-                            <Badge variant="secondary" className="text-xs">
-                              {skill.name}
-                            </Badge>
-                            <span className="text-xs text-muted-foreground font-medium">
-                              {animatedValue}%
-                            </span>
+
+        {/* Scrolling Icons Section */}
+        <FadeIn>
+          <div className="mb-20">
+            <ScrollingTechIcons />
+          </div>
+        </FadeIn>
+
+        {/* Detailed Analysis Section */}
+        <div className="space-y-12">
+          <FadeIn>
+            <h3 className="text-2xl font-bold mb-8 text-center md:text-left border-l-4 border-primary pl-4">
+              Skill Application & Project Analysis
+            </h3>
+          </FadeIn>
+
+          <StaggerContainer className="grid md:grid-cols-2 gap-8">
+            {categories.map((category, index) => {
+              const categorySkills = skillsData.filter((s) => s.category === category);
+
+              return (
+                <StaggerItem key={category} className="h-full">
+                  <motion.div
+                    whileHover={{ y: -4 }}
+                    transition={{ duration: 0.2 }}
+                    className="h-full"
+                  >
+                    <Card className="p-6 h-full hover:shadow-lg transition-all duration-300 border-t-4 border-t-primary/20">
+                      <h4 className="text-xl font-bold mb-6 text-primary flex items-center gap-2">
+                        {category}
+                      </h4>
+
+                      <div className="space-y-6">
+                        {categorySkills.map((skill, i) => (
+                          <div key={i} className="relative pl-4 border-l-2 border-border hover:border-primary transition-colors duration-300">
+                            <div className="flex items-center gap-2 mb-2">
+                              <h5 className="font-semibold text-foreground">{skill.name}</h5>
+                            </div>
+
+                            <p className="text-sm text-muted-foreground mb-3 leading-relaxed">
+                              {skill.analysis}
+                            </p>
+
+                            <div className="flex flex-wrap gap-2">
+                              {skill.relatedProjects.map((project, idx) => (
+                                <Badge
+                                  key={idx}
+                                  variant="secondary"
+                                  className="text-[10px] px-2 py-0.5"
+                                >
+                                  {project}
+                                </Badge>
+                              ))}
+                            </div>
                           </div>
-                          <Progress 
-                            value={animatedValue} 
-                            className="h-2 transition-all duration-700"
-                          />
-                        </div>
-                      );
-                    })}
-                  </div>
-                </Card>
-              </motion.div>
-            </StaggerItem>
-          ))}
-        </StaggerContainer>
+                        ))}
+                      </div>
+                    </Card>
+                  </motion.div>
+                </StaggerItem>
+              );
+            })}
+          </StaggerContainer>
+        </div>
       </div>
     </AnimatedSection>
   );
 };
 
 export default Skills;
+

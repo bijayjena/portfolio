@@ -181,4 +181,14 @@ All colors MUST be HSL.
 .snap-mandatory {
   scroll-snap-type: y mandatory;
 }
+
+  /* Marquee Animation */
+  @keyframes scroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  .animate-scroll {
+    animation: scroll 40s linear infinite;
+  }
 }

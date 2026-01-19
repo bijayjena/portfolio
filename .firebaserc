@@ -1,0 +1,8 @@
+{
+  "projects": {
+    "default": "bijay-jena",
+    "bijayjena": "bijay-jena"
+  },
+  "targets": {},
+  "etags": {}
+}
