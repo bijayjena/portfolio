@@ -76,26 +76,26 @@ const ParallaxHero = () => {
           opacity: Math.max(0, 1 - scrollY * 0.002),
         }}
       >
-        <div className="max-w-4xl mx-auto text-center">
-          {/* Profile Photo */}
-          <div className="mb-8 flex justify-center">
-            <div
-              className="relative group cursor-pointer"
-              style={{
-                transform: `translateY(${-scrollY * 0.1}px)`,
-              }}
-            >
-              <div className="w-40 h-40 md:w-48 md:h-48 rounded-full overflow-hidden border-4 border-primary/50 shadow-2xl transition-all duration-500 group-hover:scale-110 group-hover:border-primary group-hover:shadow-[0_0_40px_rgba(var(--primary-rgb),0.4)]">
+        <div className="max-w-5xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+            {/* Profile Photo */}
+            <div className="flex justify-center lg:justify-end order-1 lg:order-2">
+              <div
+                className="relative group cursor-pointer"
+                style={{
+                  transform: `translateY(${-scrollY * 0.1}px)`,
+                }}
+              >
                 <img
                   src={profilePhoto}
                   alt="Bijay Jena"
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                  className="w-64 h-64 md:w-80 md:h-80 lg:w-96 lg:h-96 object-cover object-left transition-transform duration-500 group-hover:scale-105"
                 />
               </div>
-              <div className="absolute inset-0 rounded-full bg-gradient-primary opacity-20 transition-opacity duration-500 group-hover:opacity-40" />
-              <div className="absolute -inset-2 rounded-full border-2 border-primary/0 transition-all duration-500 group-hover:border-primary/30 group-hover:scale-105" />
             </div>
-          </div>
+
+            {/* Text Content */}
+            <div className="text-center lg:text-left order-2 lg:order-1">
 
           <h1
             className="text-5xl md:text-7xl font-bold mb-6"
@@ -103,7 +103,8 @@ const ParallaxHero = () => {
               transform: `translateY(${-scrollY * 0.05}px)`,
             }}
           >
-            Hi, I'm <span className="gradient-text">Bijay Jena</span>
+            Hi, I'm<br />
+            <span className="gradient-text">Bijay Jena</span>
           </h1>
           <p className="text-xl md:text-2xl text-muted-foreground mb-4">
             Application Engineer & Full Stack Developer
@@ -113,7 +114,7 @@ const ParallaxHero = () => {
             that transform healthcare and drive innovation.
           </p>
 
-          <div className="flex flex-wrap gap-4 justify-center mb-8">
+          <div className="flex flex-wrap gap-4 justify-center lg:justify-start mb-8">
             <Button variant="hero" size="lg" asChild>
               <Link to="/projects">View Projects</Link>
             </Button>
@@ -122,7 +123,7 @@ const ParallaxHero = () => {
             </Button>
           </div>
 
-          <div className="flex gap-4 justify-center">
+          <div className="flex gap-4 justify-center lg:justify-start">
             <a
               href="https://github.com/bijayjena"
               target="_blank"
@@ -159,6 +160,8 @@ const ParallaxHero = () => {
             >
               <Download className="w-6 h-6" />
             </a>
+          </div>
+            </div>
           </div>
         </div>
       </div>
