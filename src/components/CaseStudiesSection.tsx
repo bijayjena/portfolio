@@ -19,8 +19,48 @@ import {
   TrendingUp,
   ExternalLink,
   Key,
-  Cloud
+  Cloud,
+  Code2,
+  Blocks,
+  Cpu,
+  Workflow,
+  FileJson,
+  Terminal
 } from "lucide-react";
+
+// Tech Icon URLs from SimpleIcons
+const techIconUrls: Record<string, string> = {
+  // Frontend
+  "React.js": "https://cdn.simpleicons.org/react",
+  "Redux Toolkit": "https://cdn.simpleicons.org/redux",
+  "Material UI": "https://cdn.simpleicons.org/mui",
+  "TypeScript": "https://cdn.simpleicons.org/typescript",
+  "Tailwind CSS": "https://cdn.simpleicons.org/tailwindcss",
+  
+  // Mobile
+  "React Native": "https://cdn.simpleicons.org/react",
+  "Expo": "https://cdn.simpleicons.org/expo",
+  
+  // Backend
+  "Node.js": "https://cdn.simpleicons.org/nodedotjs",
+  "Firebase": "https://cdn.simpleicons.org/firebase",
+  "REST APIs": "https://cdn.simpleicons.org/fastapi",
+  "Express": "https://cdn.simpleicons.org/express",
+  
+  // Database
+  "MongoDB": "https://cdn.simpleicons.org/mongodb",
+  
+  // AI
+  "Speech-to-Text": "https://cdn.simpleicons.org/googlepodcasts",
+  "Conversation Analysis": "https://squbix.com/static/media/squbixlogobig.a13c0db77b20b39dbbd9.png",
+  "NLP Chatbot": "https://cdn.simpleicons.org/n8n",
+  "OpenAI APIs": "https://openai.com/favicon.ico",
+  
+  // Architecture
+  "Monorepo": "https://cdn.simpleicons.org/turborepo",
+  "Module Federation": "https://cdn.simpleicons.org/webpack",
+  "Micro-frontends": "https://cdn.simpleicons.org/singlestore",
+};
 
 // Augastam Data
 const augastamMetrics = [
@@ -108,23 +148,23 @@ const CaseStudiesSection = () => {
 
         {/* Tabs */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full max-w-2xl mx-auto grid-cols-2 mb-12 h-auto p-2 bg-card/50 backdrop-blur-sm">
+          <TabsList className="grid w-full max-w-2xl mx-auto grid-cols-1 md:grid-cols-2 gap-2 mb-12 h-auto p-2 bg-card/50 backdrop-blur-sm">
             <TabsTrigger 
               value="augastam" 
-              className="py-4 px-6 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+              className="py-3 px-4 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
             >
-              <div className="text-left">
-                <div className="font-bold text-lg">Augastam HIS</div>
-                <div className="text-xs opacity-70">(Client Project - Akhil Systems Pvt Ltd)</div>
+              <div className="text-left w-full">
+                <div className="font-bold text-base md:text-lg">Augastam HIS</div>
+                <div className="text-xs opacity-70 hidden sm:block">(Client Project - Akhil Systems Pvt Ltd)</div>
               </div>
             </TabsTrigger>
             <TabsTrigger 
               value="squbix" 
-              className="py-4 px-6 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+              className="py-3 px-4 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
             >
-              <div className="text-left">
-                <div className="font-bold text-lg">Squbix HIS/CMS</div>
-                <div className="text-xs opacity-70">(Company Product - Built from Scratch)</div>
+              <div className="text-left w-full">
+                <div className="font-bold text-base md:text-lg">Squbix HIS/CMS</div>
+                <div className="text-xs opacity-70 hidden sm:block">(Company Product - Built from Scratch)</div>
               </div>
             </TabsTrigger>
           </TabsList>
@@ -277,11 +317,22 @@ const CaseStudiesSection = () => {
                 {Object.entries(augastamTechStack).map(([category, techs], index) => (
                   <div key={index}>
                     <h4 className="font-semibold text-primary mb-3 capitalize">{category}</h4>
-                    <div className="flex flex-wrap gap-2">
+                    <div className="flex flex-wrap gap-3">
                       {techs.map((tech, i) => (
-                        <Badge key={i} variant="secondary" className="text-xs">
-                          {tech}
-                        </Badge>
+                        <div 
+                          key={i} 
+                          className="group relative flex items-center justify-center p-3 rounded-lg bg-card hover:bg-primary/10 transition-all duration-300 cursor-pointer border border-border/50 hover:border-primary/50 hover:scale-110"
+                          title={tech}
+                        >
+                          <img 
+                            src={techIconUrls[tech] || "https://cdn.simpleicons.org/code"}
+                            alt={tech}
+                            className="w-8 h-8 object-contain filter grayscale opacity-70 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300"
+                          />
+                          <div className="absolute bottom-full mb-2 hidden group-hover:block bg-popover text-popover-foreground text-xs px-3 py-1.5 rounded shadow-lg whitespace-nowrap z-10">
+                            {tech}
+                          </div>
+                        </div>
                       ))}
                     </div>
                   </div>
@@ -480,11 +531,22 @@ const CaseStudiesSection = () => {
                 {Object.entries(squbixTechStack).map(([category, techs], index) => (
                   <div key={index}>
                     <h4 className="font-semibold text-primary mb-3 capitalize">{category}</h4>
-                    <div className="flex flex-wrap gap-2">
+                    <div className="flex flex-wrap gap-3">
                       {techs.map((tech, i) => (
-                        <Badge key={i} variant="secondary" className="text-xs">
-                          {tech}
-                        </Badge>
+                        <div 
+                          key={i} 
+                          className="group relative flex items-center justify-center p-3 rounded-lg bg-card hover:bg-primary/10 transition-all duration-300 cursor-pointer border border-border/50 hover:border-primary/50 hover:scale-110"
+                          title={tech}
+                        >
+                          <img 
+                            src={techIconUrls[tech] || "https://cdn.simpleicons.org/code"}
+                            alt={tech}
+                            className="w-8 h-8 object-contain filter grayscale opacity-70 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300"
+                          />
+                          <div className="absolute bottom-full mb-2 hidden group-hover:block bg-popover text-popover-foreground text-xs px-3 py-1.5 rounded shadow-lg whitespace-nowrap z-10">
+                            {tech}
+                          </div>
+                        </div>
                       ))}
                     </div>
                   </div>

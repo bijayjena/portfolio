@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Menu, X, Sun, Moon } from "lucide-react";
 import { useTheme } from "@/components/ThemeProvider";
 import { motion, AnimatePresence } from "framer-motion";
+import logo from "@/assets/logo.png";
 
 const navItems = [
   { label: "Home", href: "/" },
@@ -72,9 +73,11 @@ const Navigation = () => {
               className="flex items-center gap-3 hover:opacity-80 transition-opacity"
             >
               <img 
-                src="/src/assets/logo.png" 
+                src={logo} 
                 alt="BJ Logo" 
                 className="h-8 w-auto"
+                loading="eager"
+                decoding="async"
               />
               <div className="hidden sm:flex flex-col">
                 <span className="text-sm font-bold leading-tight">Bijay Jena</span>

@@ -3,6 +3,7 @@ import { Github, Linkedin, Mail } from "lucide-react";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
+  const appVersion = typeof __APP_VERSION__ !== "undefined" ? __APP_VERSION__ : undefined;
 
   return (
     <footer className="bg-card border-t border-border py-8 px-4">
@@ -71,7 +72,10 @@ const Footer = () => {
         </div>
 
         <div className="border-t border-border pt-6 text-center text-sm text-muted-foreground">
-          <p>© {currentYear} Bijay Jena. Built with React & TypeScript.</p>
+          <p>
+            © {currentYear} Bijay Jena. Built with React & TypeScript
+            {appVersion ? <span className="ml-2">• v{appVersion}</span> : null}.
+          </p>
         </div>
       </div>
     </footer>
