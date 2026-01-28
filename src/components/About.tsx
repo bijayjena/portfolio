@@ -2,15 +2,19 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Rocket, Brain, Users, Target } from "lucide-react";
 import { AnimatedSection, FadeIn, StaggerContainer, StaggerItem } from "./AnimatedSection";
-
-const highlights = [
-  { icon: Users, label: "Team of 8", desc: "Backend, Frontend, App, UI/UX, AI" },
-  { icon: Rocket, label: "2+ Years", desc: "At Squbix Digital" },
-  { icon: Brain, label: "AI Integration", desc: "Healthcare & Products" },
-  { icon: Target, label: "Full-Stack", desc: "Web, Mobile & Backend" },
-];
+import { calculateTotalExperience, getExperienceDurationString } from "@/data/experienceData";
 
 const About = () => {
+  // Calculate experience dynamically
+  const experienceString = getExperienceDurationString();
+
+  const highlights = [
+    { icon: Users, label: "Team of 8", desc: "Backend, Frontend, App, UI/UX, AI" },
+    { icon: Rocket, label: experienceString, desc: "Professional Experience" },
+    { icon: Brain, label: "AI Integration", desc: "Healthcare & Products" },
+    { icon: Target, label: "Full-Stack", desc: "Web, Mobile & Backend" },
+  ];
+
   return (
     <AnimatedSection className="py-12 md:py-20 px-4">
       <div className="container mx-auto max-w-5xl">
@@ -19,7 +23,7 @@ const About = () => {
             About <span className="gradient-text">Me</span>
           </h2>
         </FadeIn>
-        
+
         {/* Highlight cards */}
         <StaggerContainer className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
           {highlights.map((item, i) => (
@@ -32,7 +36,7 @@ const About = () => {
             </StaggerItem>
           ))}
         </StaggerContainer>
-        
+
         <FadeIn delay={0.2}>
           <Card className="p-8">
             <p className="text-lg text-muted-foreground leading-relaxed mb-6">
@@ -44,7 +48,7 @@ const About = () => {
             <p className="text-lg text-muted-foreground leading-relaxed">
               My multidisciplinary background in <span className="text-foreground font-semibold">Python, SQL, PowerBI, and Big Data</span> allows me to bring a unique perspective. My insatiable curiosity drives me to continually explore new tools and technologies, working towards my dream of becoming a versatile freelancer and successful business owner.
             </p>
-            
+
             <div className="flex flex-wrap gap-2 mt-6 pt-6 border-t border-border">
               <Badge>Generative AI</Badge>
               <Badge>LLMs</Badge>

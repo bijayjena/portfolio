@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Github, Linkedin, Mail, Phone, Download } from "lucide-react";
 import heroBg from "@/assets/hero-bg.jpg";
 import profilePhoto from "@/assets/profile-photo.jpg";
+import { calculateTotalExperience, getExperienceDurationString } from "@/data/experienceData";
 
 const ParallaxHero = () => {
   const [scrollY, setScrollY] = useState(0);
@@ -22,6 +23,9 @@ const ParallaxHero = () => {
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  // Calculate experience dynamically using centralized data
+  const experienceString = getExperienceDurationString();
 
   return (
     <section
@@ -97,70 +101,75 @@ const ParallaxHero = () => {
             {/* Text Content */}
             <div className="text-center lg:text-left order-2 lg:order-1">
 
-          <h1
-            className="text-5xl md:text-7xl font-bold mb-6"
-            style={{
-              transform: `translateY(${-scrollY * 0.05}px)`,
-            }}
-          >
-            Hi, I'm<br />
-            <span className="gradient-text">Bijay Jena</span>
-          </h1>
-          <p className="text-xl md:text-2xl text-muted-foreground mb-4">
-            Application Engineer & Full Stack Developer
-          </p>
-          <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
-            Specializing in React, React Native, and AI integration. Building scalable solutions
-            that transform healthcare and drive innovation.
-          </p>
+              <h1
+                className="text-5xl md:text-7xl font-bold mb-6"
+                style={{
+                  transform: `translateY(${-scrollY * 0.05}px)`,
+                }}
+              >
+                Hi, I'm<br />
+                <span className="gradient-text">Bijay Jena</span>
+              </h1>
+              <div className="flex flex-col gap-2 mb-4">
+                <p className="text-xl md:text-2xl text-muted-foreground">
+                  Application Engineer & Full Stack Developer
+                </p>
+                <p className="text-lg md:text-xl font-medium text-primary">
+                  {experienceString} of Experience
+                </p>
+              </div>
+              <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
+                Specializing in React, React Native, and AI integration. Building scalable solutions
+                that transform healthcare and drive innovation.
+              </p>
 
-          <div className="flex flex-wrap gap-4 justify-center lg:justify-start mb-8">
-            <Button variant="hero" size="lg" asChild>
-              <Link to="/projects">View Projects</Link>
-            </Button>
-            <Button variant="outline" size="lg" asChild>
-              <Link to="/#contact">Get in Touch</Link>
-            </Button>
-          </div>
+              <div className="flex flex-wrap gap-4 justify-center lg:justify-start mb-8">
+                <Button variant="hero" size="lg" asChild>
+                  <Link to="/projects">View Projects</Link>
+                </Button>
+                <Button variant="outline" size="lg" asChild>
+                  <Link to="/#contact">Get in Touch</Link>
+                </Button>
+              </div>
 
-          <div className="flex gap-4 justify-center lg:justify-start">
-            <a
-              href="https://github.com/bijayjena"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="p-3 rounded-full bg-card hover:bg-primary transition-colors"
-            >
-              <Github className="w-6 h-6" />
-            </a>
-            <a
-              href="https://linkedin.com/in/bijayjena"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="p-3 rounded-full bg-card hover:bg-primary transition-colors"
-            >
-              <Linkedin className="w-6 h-6" />
-            </a>
-            <a
-              href="mailto:bijayjenaofficial@gmail.com"
-              className="p-3 rounded-full bg-card hover:bg-primary transition-colors"
-            >
-              <Mail className="w-6 h-6" />
-            </a>
-            <a
-              href="tel:+916371303113"
-              className="p-3 rounded-full bg-card hover:bg-primary transition-colors"
-            >
-              <Phone className="w-6 h-6" />
-            </a>
-            <a
-              href="/resume.pdf"
-              download="Bijay_Jena_Resume.pdf"
-              className="p-3 rounded-full bg-card hover:bg-primary transition-colors"
-              title="Download Resume"
-            >
-              <Download className="w-6 h-6" />
-            </a>
-          </div>
+              <div className="flex gap-4 justify-center lg:justify-start">
+                <a
+                  href="https://github.com/bijayjena"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-3 rounded-full bg-card hover:bg-primary transition-colors"
+                >
+                  <Github className="w-6 h-6" />
+                </a>
+                <a
+                  href="https://linkedin.com/in/bijayjena"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-3 rounded-full bg-card hover:bg-primary transition-colors"
+                >
+                  <Linkedin className="w-6 h-6" />
+                </a>
+                <a
+                  href="mailto:bijayjenaofficial@gmail.com"
+                  className="p-3 rounded-full bg-card hover:bg-primary transition-colors"
+                >
+                  <Mail className="w-6 h-6" />
+                </a>
+                <a
+                  href="tel:+916371303113"
+                  className="p-3 rounded-full bg-card hover:bg-primary transition-colors"
+                >
+                  <Phone className="w-6 h-6" />
+                </a>
+                <a
+                  href="/resume.pdf"
+                  download="Bijay_Jena_Resume.pdf"
+                  className="p-3 rounded-full bg-card hover:bg-primary transition-colors"
+                  title="Download Resume"
+                >
+                  <Download className="w-6 h-6" />
+                </a>
+              </div>
             </div>
           </div>
         </div>
