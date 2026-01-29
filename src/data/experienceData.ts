@@ -12,6 +12,8 @@ export interface Experience {
     achievements: string[];
     color: string;
     icon: any; // Lucide icon component
+    customImage?: string; // Custom image URL for special levels
+    certificateImage?: string; // Certificate image path
     highlight?: boolean;
 }
 
@@ -28,8 +30,10 @@ export const experiences: Experience[] = [
         achievements: [
             "Gained foundational experience in software development practices",
         ],
-        color: "from-rose-500 to-pink-500",
+        color: "from-green-500 to-emerald-500",
         icon: Gamepad2,
+        customImage: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQbXuXVi-jpQ9ErAEwhoXOdszcd0oYlwA74uVgFBEF74tkCd-K9S4NCxvHnM-w&s&ec=121516174",
+        certificateImage: "/src/assets/syllogistek-certificate.png",
     },
     {
         title: "Mobile Application Developer (Intern)",

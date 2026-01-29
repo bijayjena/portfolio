@@ -1,8 +1,9 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { MapPin, Briefcase } from "lucide-react";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { MapPin, Briefcase, X } from "lucide-react";
 import { experiences } from "@/data/experienceData";
 
 // Experiences are now imported from centralized data source
@@ -85,6 +86,7 @@ const CareerJourney = () => {
 const TimelineNode = ({ experience, index }: { experience: any; index: number }) => {
   const isEven = index % 2 === 0;
   const Icon = experience.icon;
+  const [isExpanded, setIsExpanded] = useState(false);
 
   return (
     <motion.div
@@ -97,8 +99,16 @@ const TimelineNode = ({ experience, index }: { experience: any; index: number })
       {/* Timeline Point/Icon (Center) */}
       <div className="absolute left-8 md:left-1/2 -translate-x-1/2 flex flex-col items-center justify-center z-10 w-12 md:w-auto">
         <div className={`w-12 h-12 md:w-16 md:h-16 rounded-2xl bg-gradient-to-br ${experience.color} p-0.5 shadow-lg shadow-primary/20 transform rotate-3 transition-transform hover:rotate-0`}>
-          <div className="w-full h-full bg-background rounded-2xl flex items-center justify-center border border-white/10">
-            <Icon className={`w-6 h-6 md:w-8 md:h-8 text-transparent bg-clip-text bg-gradient-to-br ${experience.color} fill-current`} />
+          <div className="w-full h-full bg-background rounded-2xl flex items-center justify-center border border-white/10 overflow-hidden">
+            {experience.customImage ? (
+              <img 
+                src={experience.customImage} 
+                alt={`${experience.title} icon`}
+                className="w-full h-full object-cover rounded-xl"
+              />
+            ) : (
+              <Icon className={`w-6 h-6 md:w-8 md:h-8 text-transparent bg-clip-text bg-gradient-to-br ${experience.color} fill-current`} />
+            )}
           </div>
         </div>
         <div className="mt-2 bg-background/80 backdrop-blur px-2 py-0.5 rounded text-[10px] font-bold border border-primary/20 uppercase tracking-wider text-muted-foreground">
@@ -151,14 +161,18 @@ const TimelineNode = ({ experience, index }: { experience: any; index: number })
 
               {/* Achievements Preview */}
               <div className="mt-4 flex flex-wrap gap-2">
-                {experience.achievements.slice(0, 2).map((ach: string, i: number) => (
+                {(isExpanded ? experience.achievements : experience.achievements.slice(0, 2)).map((ach: string, i: number) => (
                   <Badge key={i} variant="secondary" className="text-[10px] font-normal leading-tight h-auto py-1">
                     {ach}
                   </Badge>
                 ))}
                 {experience.achievements.length > 2 && (
-                  <Badge variant="outline" className="text-[10px] cursor-pointer hover:bg-primary hover:text-primary-foreground transform transition-all active:scale-95">
-                    +{experience.achievements.length - 2} more quests
+                  <Badge 
+                    variant="outline" 
+                    className="text-[10px] cursor-pointer hover:bg-primary hover:text-primary-foreground transform transition-all active:scale-95"
+                    onClick={() => setIsExpanded(!isExpanded)}
+                  >
+                    {isExpanded ? 'Show less' : `+${experience.achievements.length - 2} more quests`}
                   </Badge>
                 )}
               </div>
@@ -172,12 +186,44 @@ const TimelineNode = ({ experience, index }: { experience: any; index: number })
         ${isEven ? 'md:col-start-2 md:pl-12' : 'md:col-start-1 md:pr-12 md:text-right'}
       `}>
         <div className="relative aspect-video rounded-xl overflow-hidden bg-muted/30 border border-white/10 group-hover:border-primary/20 transition-colors flex items-center justify-center">
-          {/* Placeholder for future images */}
-          <div className={`absolute inset-0 bg-gradient-to-br ${experience.color} opacity-5 group-hover:opacity-10 transition-opacity`} />
-          <Icon className={`w-16 h-16 opacity-20 group-hover:opacity-30 transition-opacity bg-clip-text text-transparent bg-gradient-to-br ${experience.color} fill-current`} />
-
-          {/* Decoration */}
-          <div className="absolute inset-0 bg-grid-white/[0.05]" />
+          {experience.certificateImage ? (
+            <Dialog>
+              <DialogTrigger asChild>
+                <div className="w-full h-full cursor-pointer group/cert relative">
+                  <img 
+                    src={experience.certificateImage} 
+                    alt={`${experience.company} certificate`}
+                    className="w-full h-full object-cover transition-transform group-hover/cert:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+                  <div className="absolute inset-0 bg-black/0 group-hover/cert:bg-black/10 transition-colors flex items-center justify-center">
+                    <div className="bg-white/20 backdrop-blur-sm rounded-full p-2 opacity-0 group-hover/cert:opacity-100 transition-opacity">
+                      <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+              </DialogTrigger>
+              <DialogContent className="max-w-4xl w-full p-0 bg-transparent border-none">
+                <div className="relative">
+                  <img 
+                    src={experience.certificateImage} 
+                    alt={`${experience.company} certificate - Full view`}
+                    className="w-full h-auto max-h-[90vh] object-contain rounded-lg"
+                  />
+                </div>
+              </DialogContent>
+            </Dialog>
+          ) : (
+            <>
+              {/* Placeholder for future images */}
+              <div className={`absolute inset-0 bg-gradient-to-br ${experience.color} opacity-5 group-hover:opacity-10 transition-opacity`} />
+              <Icon className={`w-16 h-16 opacity-20 group-hover:opacity-30 transition-opacity bg-clip-text text-transparent bg-gradient-to-br ${experience.color} fill-current`} />
+              {/* Decoration */}
+              <div className="absolute inset-0 bg-grid-white/[0.05]" />
+            </>
+          )}
         </div>
       </div>
     </motion.div>
