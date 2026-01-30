@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Github, Linkedin, Mail, Phone, Download } from "lucide-react";
 import heroBg from "@/assets/hero-bg.jpg";
-import profilePhoto from "@/assets/profile-photo.jpg";
+import TechStackVisualization from "@/components/TechStackVisualization";
 import { calculateTotalExperience, getExperienceDurationString } from "@/data/experienceData";
 
 const ParallaxHero = () => {
@@ -82,7 +82,7 @@ const ParallaxHero = () => {
       >
         <div className="max-w-5xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-            {/* Profile Photo */}
+            {/* Tech Stack Visualization */}
             <div className="flex justify-center lg:justify-end order-1 lg:order-2">
               <div
                 className="relative group cursor-pointer"
@@ -90,11 +90,16 @@ const ParallaxHero = () => {
                   transform: `translateY(${-scrollY * 0.1}px)`,
                 }}
               >
-                <img
-                  src={profilePhoto}
-                  alt="Bijay Jena"
-                  className="w-64 h-64 md:w-80 md:h-80 lg:w-96 lg:h-96 object-cover object-left transition-transform duration-500 group-hover:scale-105"
-                />
+                <TechStackVisualization />
+                {/* <div className="w-64 h-64 md:w-80 md:h-80 lg:w-96 lg:h-96 rounded-lg overflow-hidden bg-gradient-to-br from-slate-900 to-slate-800 flex items-center justify-center">
+                  <p className="text-white">Tech Stack Visualization</p>
+                </div> */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg" />
+                <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <p className="text-white text-sm font-medium bg-black/50 px-3 py-1 rounded-full backdrop-blur-sm">
+                    Interactive Tech Stack
+                  </p>
+                </div>
               </div>
             </div>
 
