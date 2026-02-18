@@ -1,8 +1,9 @@
-import { useRef, useMemo } from 'react';
+import { useRef, useMemo, Suspense } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { Text, OrbitControls, Float, Environment } from '@react-three/drei';
 import * as THREE from 'three';
 import { skillsData } from '@/data/skillsData';
+import ErrorBoundary from '@/components/ErrorBoundary';
 
 // Tech stack item component
 function TechItem({ 
@@ -22,15 +23,15 @@ function TechItem({
   useFrame((state) => {
     if (meshRef.current && textRef.current) {
       // Gentle floating animation
-      meshRef.current.rotation.y = state.clock.elapsedTime * 0.5;
-      meshRef.current.position.y = position[1] + Math.sin(state.clock.elapsedTime + position[0]) * 0.1;
+      meshRef.current.rotation.y = state.clock.elapsedTime * 0.3;
+      meshRef.current.position.y = position[1] + Math.sin(state.clock.elapsedTime * 0.5 + position[0]) * 0.15;
       
       // Text always faces camera
       textRef.current.lookAt(state.camera.position);
     }
   });
 
-  const categoryColors = {
+  const categoryColors: Record<string, string> = {
     'Frontend': '#61DAFB',
     'Backend': '#68A063',
     'AI & LLMs': '#FF6B6B',
@@ -42,34 +43,38 @@ function TechItem({
   return (
     <Float speed={1.5} rotationIntensity={0.5} floatIntensity={0.5}>
       <group position={position}>
-        {/* Glowing sphere */}
+        {/* Glowing sphere - slightly larger */}
         <mesh ref={meshRef}>
-          <sphereGeometry args={[0.3, 16, 16]} />
+          <sphereGeometry args={[0.35, 20, 20]} />
           <meshStandardMaterial 
-            color={categoryColors[category as keyof typeof categoryColors] || color}
-            emissive={categoryColors[category as keyof typeof categoryColors] || color}
-            emissiveIntensity={0.2}
+            color={categoryColors[category] || color}
+            emissive={categoryColors[category] || color}
+            emissiveIntensity={0.3}
             transparent
-            opacity={0.8}
+            opacity={0.85}
+            metalness={0.3}
+            roughness={0.4}
           />
         </mesh>
         
-        {/* Tech name text */}
-        <group ref={textRef} position={[0, -0.6, 0]}>
+        {/* Tech name text - better positioning */}
+        <group ref={textRef} position={[0, -0.7, 0]}>
           <Text
-            fontSize={0.15}
+            fontSize={0.18}
             color="white"
             anchorX="center"
             anchorY="middle"
+            outlineWidth={0.02}
+            outlineColor="#000000"
           >
             {name}
           </Text>
           <Text
-            fontSize={0.08}
-            color="#888"
+            fontSize={0.1}
+            color="#aaa"
             anchorX="center"
             anchorY="middle"
-            position={[0, -0.2, 0]}
+            position={[0, -0.25, 0]}
           >
             {category}
           </Text>
@@ -84,18 +89,19 @@ function BackgroundParticles() {
   const particlesRef = useRef<THREE.Points>(null);
   
   const particles = useMemo(() => {
-    const positions = new Float32Array(200 * 3);
-    for (let i = 0; i < 200; i++) {
-      positions[i * 3] = (Math.random() - 0.5) * 20;
-      positions[i * 3 + 1] = (Math.random() - 0.5) * 20;
-      positions[i * 3 + 2] = (Math.random() - 0.5) * 20;
+    const positions = new Float32Array(150 * 3);
+    for (let i = 0; i < 150; i++) {
+      positions[i * 3] = (Math.random() - 0.5) * 30;
+      positions[i * 3 + 1] = (Math.random() - 0.5) * 30;
+      positions[i * 3 + 2] = (Math.random() - 0.5) * 30;
     }
     return positions;
   }, []);
 
   useFrame((state) => {
     if (particlesRef.current) {
-      particlesRef.current.rotation.y = state.clock.elapsedTime * 0.05;
+      particlesRef.current.rotation.y = state.clock.elapsedTime * 0.03;
+      particlesRef.current.rotation.x = state.clock.elapsedTime * 0.02;
     }
   });
 
@@ -104,12 +110,12 @@ function BackgroundParticles() {
       <bufferGeometry>
         <bufferAttribute
           attach="attributes-position"
-          count={200}
+          count={150}
           array={particles}
           itemSize={3}
         />
       </bufferGeometry>
-      <pointsMaterial size={0.02} color="#4A90E2" transparent opacity={0.6} />
+      <pointsMaterial size={0.03} color="#4A90E2" transparent opacity={0.4} />
     </points>
   );
 }
@@ -120,25 +126,37 @@ function TechScene() {
 
   useFrame((state) => {
     if (groupRef.current) {
-      groupRef.current.rotation.y = state.clock.elapsedTime * 0.1;
+      // Slower rotation for better visibility
+      groupRef.current.rotation.y = state.clock.elapsedTime * 0.08;
     }
   });
 
-  // Create positions for tech items in a spiral pattern
+  // Create positions for tech items in a spiral pattern with better spacing
   const techPositions = useMemo(() => {
     const positions: Array<[number, number, number]> = [];
-    const radius = 3;
-    const height = 4;
+    const baseRadius = 4; // Increased from 3
+    const height = 8; // Increased from 4
+    const spiralTurns = 2; // Number of spiral rotations
     
     if (!skillsData || skillsData.length === 0) {
       return positions;
     }
     
     skillsData.forEach((skill, index) => {
-      const angle = (index / skillsData.length) * Math.PI * 2;
-      const y = (index / skillsData.length - 0.5) * height;
-      const x = Math.cos(angle) * radius;
-      const z = Math.sin(angle) * radius;
+      const progress = index / skillsData.length;
+      
+      // Create a spiral pattern with varying radius
+      const angle = progress * Math.PI * 2 * spiralTurns;
+      const radiusVariation = Math.sin(progress * Math.PI) * 0.5; // Adds wave to radius
+      const currentRadius = baseRadius + radiusVariation;
+      
+      // Vertical position with slight wave
+      const y = (progress - 0.5) * height;
+      
+      // Horizontal positions
+      const x = Math.cos(angle) * currentRadius;
+      const z = Math.sin(angle) * currentRadius;
+      
       positions.push([x, y, z]);
     });
     
@@ -165,43 +183,63 @@ function TechScene() {
   );
 }
 
+// Loading fallback
+const LoadingFallback = () => (
+  <div className="w-64 h-64 md:w-80 md:h-80 lg:w-96 lg:h-96 rounded-lg overflow-hidden bg-gradient-to-br from-slate-900 to-slate-800 flex items-center justify-center">
+    <div className="text-center space-y-3">
+      <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto" />
+      <p className="text-white text-sm">Loading tech stack...</p>
+    </div>
+  </div>
+);
+
 // Main component
 const TechStackVisualization = () => {
   // Safety check for skillsData
   if (!skillsData || skillsData.length === 0) {
-    return (
-      <div className="w-64 h-64 md:w-80 md:h-80 lg:w-96 lg:h-96 rounded-lg overflow-hidden bg-gradient-to-br from-slate-900 to-slate-800 flex items-center justify-center">
-        <p className="text-white text-sm">Loading tech stack...</p>
-      </div>
-    );
+    return <LoadingFallback />;
   }
 
   return (
-    <div className="w-64 h-64 md:w-80 md:h-80 lg:w-96 lg:h-96 rounded-lg overflow-hidden bg-gradient-to-br from-slate-900 to-slate-800">
-      <Canvas
-        camera={{ position: [0, 0, 8], fov: 60 }}
-        gl={{ antialias: true, alpha: true }}
-        onCreated={({ gl }) => {
-          gl.setClearColor('#000000', 0);
-        }}
-      >
-        <Environment preset="night" />
-        <ambientLight intensity={0.3} />
-        <pointLight position={[10, 10, 10]} intensity={1} />
-        <pointLight position={[-10, -10, -10]} intensity={0.5} color="#4A90E2" />
-        
-        <TechScene />
-        
-        <OrbitControls
-          enableZoom={false}
-          enablePan={false}
-          autoRotate
-          autoRotateSpeed={0.5}
-          maxPolarAngle={Math.PI / 1.5}
-          minPolarAngle={Math.PI / 3}
-        />
-      </Canvas>
-    </div>
+    <ErrorBoundary fallback={<LoadingFallback />}>
+      <div className="w-64 h-64 md:w-80 md:h-80 lg:w-96 lg:h-96 rounded-lg overflow-hidden bg-gradient-to-br from-slate-900 to-slate-800 shadow-2xl">
+        <Suspense fallback={null}>
+          <Canvas
+            camera={{ position: [0, 0, 12], fov: 65 }}
+            gl={{ 
+              antialias: true, 
+              alpha: true,
+              powerPreference: "high-performance"
+            }}
+            onCreated={({ gl }) => {
+              gl.setClearColor('#000000', 0);
+            }}
+            dpr={[1, 2]} // Limit pixel ratio for performance
+          >
+            <Environment preset="night" />
+            <ambientLight intensity={0.4} />
+            <pointLight position={[15, 15, 15]} intensity={1.2} />
+            <pointLight position={[-15, -15, -15]} intensity={0.6} color="#4A90E2" />
+            <spotLight position={[0, 20, 0]} intensity={0.5} angle={0.3} penumbra={1} />
+            
+            <TechScene />
+            
+            <OrbitControls
+              enableZoom={true}
+              minDistance={8}
+              maxDistance={18}
+              enablePan={false}
+              autoRotate
+              autoRotateSpeed={0.3}
+              maxPolarAngle={Math.PI / 1.5}
+              minPolarAngle={Math.PI / 3}
+              enableDamping
+              dampingFactor={0.05}
+            />
+          </Canvas>
+        </Suspense>
+      </div>
+    </ErrorBoundary>
   );
 };
 

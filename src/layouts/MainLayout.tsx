@@ -2,6 +2,7 @@ import { Outlet } from "react-router-dom";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import FloatingControls from "@/components/FloatingControls";
+import AIChatbot from "@/components/AIChatbot";
 
 const MainLayout = () => {
   return (
@@ -12,6 +13,7 @@ const MainLayout = () => {
       </main>
       <Footer />
       <FloatingControls />
+      <AIChatbot />
     </div>
   );
 };

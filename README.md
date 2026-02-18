@@ -115,11 +115,25 @@ A suite of foundational products I helped build and launch, ranging from fintech
 
 This repository hosts the source code for my personal portfolio website, designed to showcase my journey and projects.
 
+### 🤖 NEW: AI-Powered Chatbot
+The portfolio now features an intelligent chatbot powered by **Google Gemini AI** that can answer questions about my experience, skills, and projects. Visitors can interact with the chatbot to learn more about me in a conversational way!
+
+**[📖 Chatbot Setup Guide →](./docs/CHATBOT_SETUP.md)**
+
 ### Technologies
 - **Vite** - Build tool
 - **React** - UI Library
 - **Tailwind CSS** - Styling
 - **framer-motion** - Animations
+- **React Three Fiber** - 3D visualizations
+
+### Recent Enhancements ✨
+The portfolio has been significantly enhanced with:
+- 🛡️ **Stability**: Error boundaries, performance optimizations
+- 📱 **Responsiveness**: Mobile-first design, touch-optimized
+- ✨ **Wow Factor**: Smooth 60fps animations, micro-interactions
+
+📚 **[View Complete Documentation →](./docs/README.md)**
 
 ### Installation
 To run this project locally:
@@ -132,8 +146,16 @@ git clone https://github.com/bijayjena/portfolio.git
 npm install
 
 # Start development server
-npm run dev
+npm start
 ```
+
+### Documentation
+Comprehensive documentation is available in the [`docs`](./docs) folder:
+- [Summary](./docs/SUMMARY.md) - Quick overview
+- [Improvements](./docs/IMPROVEMENTS.md) - Technical details
+- [Testing Guide](./docs/TESTING_GUIDE.md) - QA checklist
+- [Quick Reference](./docs/QUICK_REFERENCE.md) - Developer guide
+- [Architecture](./docs/ARCHITECTURE.md) - System design
 
 ---
 
