@@ -12,10 +12,13 @@ portfolio/
 │   ├── TESTING_GUIDE.md            # QA and testing procedures
 │   ├── QUICK_REFERENCE.md          # Developer cheat sheet
 │   ├── ARCHITECTURE.md             # System architecture
-│   └── COMPLETION_REPORT.md        # Project delivery report
+│   ├── COMPLETION_REPORT.md        # Project delivery report
+│   ├── CHATBOT_SETUP.md            # 🤖 NEW: AI Chatbot setup guide
+│   └── AI_CHATBOT_FEATURES.md      # 🤖 NEW: Chatbot features & docs
 │
 ├── src/                            # Source code
 │   ├── components/                 # React components
+│   │   ├── AIChatbot.tsx           # 🤖 NEW: AI-powered chatbot
 │   │   ├── ErrorBoundary.tsx       # ✨ NEW: Error handling
 │   │   ├── OptimizedImage.tsx      # ✨ NEW: Lazy loading images
 │   │   ├── LoadingScreen.tsx       # ✨ NEW: Loading state
@@ -30,6 +33,7 @@ portfolio/
 │   │   └── useIntersectionObserver.ts # ✨ NEW: Lazy loading
 │   │
 │   ├── utils/                      # Utility functions
+│   │   ├── chatbot.ts              # 🤖 NEW: Chatbot profile context
 │   │   ├── performance.ts          # ✨ NEW: Performance utilities
 │   │   └── monitoring.ts           # ✨ NEW: Performance monitoring
 │   │
@@ -37,6 +41,13 @@ portfolio/
 │   ├── main.tsx                    # 🔧 ENHANCED: Monitoring
 │   └── index.css                   # 🔧 ENHANCED: New utilities
 │
+├── api/                            # 🤖 NEW: Serverless API
+│   └── chat.ts                     # Gemini AI integration
+│
+├── .env.local                      # 🤖 NEW: Environment variables
+├── .env.example                    # 🤖 NEW: Env template
+├── vercel.json                     # 🤖 NEW: Deployment config
+├── CHATBOT_QUICKSTART.md           # 🤖 NEW: Quick setup guide
 ├── tailwind.config.ts              # 🔧 ENHANCED: Responsive config
 └── README.md                       # Main project README
 ```
@@ -69,6 +80,11 @@ portfolio/
 3. [QUICK_REFERENCE.md](./QUICK_REFERENCE.md) - Common patterns
 4. [IMPROVEMENTS.md](./IMPROVEMENTS.md) - What's new
 
+#### 🤖 AI Chatbot Setup
+1. [CHATBOT_QUICKSTART.md](../CHATBOT_QUICKSTART.md) - 3-minute setup
+2. [CHATBOT_SETUP.md](./CHATBOT_SETUP.md) - Detailed guide
+3. [AI_CHATBOT_FEATURES.md](./AI_CHATBOT_FEATURES.md) - Features & customization
+
 ---
 
 ## 📖 By Topic
@@ -99,6 +115,13 @@ portfolio/
 ### 🧪 Testing & QA
 - [TESTING_GUIDE.md](./TESTING_GUIDE.md) - Complete guide
 - [COMPLETION_REPORT.md](./COMPLETION_REPORT.md#testing-status)
+
+### 🤖 AI Chatbot
+- [CHATBOT_QUICKSTART.md](../CHATBOT_QUICKSTART.md) - Quick setup
+- [CHATBOT_SETUP.md](./CHATBOT_SETUP.md) - Detailed setup
+- [AI_CHATBOT_FEATURES.md](./AI_CHATBOT_FEATURES.md) - Features guide
+- Components: `AIChatbot.tsx`
+- API: `api/chat.ts`
 
 ---
 

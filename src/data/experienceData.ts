@@ -51,6 +51,8 @@ export const experiences: Experience[] = [
         ],
         color: "from-sky-500 to-blue-500",
         icon: Code,
+        customImage: "/src/assets/squbix_logo.jpg",
+        certificateImage: "/src/assets/squbix-intern-certificate.png",
     },
     {
         title: "Software Developer",
@@ -68,6 +70,7 @@ export const experiences: Experience[] = [
         ],
         color: "from-amber-500 to-orange-500",
         icon: Rocket,
+        customImage: "/src/assets/squbix_logo.jpg",
     },
     {
         title: "Senior Software Engineer",
@@ -85,6 +88,7 @@ export const experiences: Experience[] = [
         ],
         color: "from-emerald-500 to-teal-500",
         icon: Star,
+        customImage: "/src/assets/squbix_logo.jpg",
     },
     {
         title: "Associate Team Lead & Manager",
@@ -103,6 +107,7 @@ export const experiences: Experience[] = [
         ],
         color: "from-violet-500 to-purple-500",
         icon: Trophy,
+        customImage: "/src/assets/squbix_logo.jpg",
     },
 ];
 

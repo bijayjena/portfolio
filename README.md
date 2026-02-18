@@ -116,9 +116,10 @@ A suite of foundational products I helped build and launch, ranging from fintech
 This repository hosts the source code for my personal portfolio website, designed to showcase my journey and projects.
 
 ### 🤖 NEW: AI-Powered Chatbot
-The portfolio now features an intelligent chatbot powered by **Google Gemini AI** that can answer questions about my experience, skills, and projects. Visitors can interact with the chatbot to learn more about me in a conversational way!
+The portfolio now features an intelligent chatbot powered by **Google Gemini AI** running on **Firebase Cloud Functions**. Visitors can interact with the chatbot to learn more about me in a conversational way!
 
-**[📖 Chatbot Setup Guide →](./docs/CHATBOT_SETUP.md)**
+**[📖 Firebase Setup Guide →](./FIREBASE_SETUP.md)**  
+**[⚡ Quick Commands →](./FIREBASE_COMMANDS.md)**
 
 ### Technologies
 - **Vite** - Build tool

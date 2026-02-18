@@ -5,6 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
+import { httpsCallable } from "firebase/functions";
+import { functions, ensureAuthenticated } from "@/lib/firebase";
 
 interface Message {
   role: "user" | "assistant";
@@ -49,27 +51,39 @@ const AIChatbot = () => {
     setIsLoading(true);
 
     try {
-      const response = await fetch("/api/chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: userMessage, history: messages }),
+      // Ensure user is authenticated (anonymous)
+      await ensureAuthenticated();
+
+      // Call Firebase Cloud Function
+      const chatWithGemini = httpsCallable(functions, "chatWithGemini");
+      
+      const result = await chatWithGemini({
+        message: userMessage,
+        history: messages,
       });
 
-      if (!response.ok) throw new Error("Failed to get response");
-
-      const data = await response.json();
+      const data = result.data as { response: string };
       const assistantMessage: Message = {
         role: "assistant",
         content: data.response,
       };
       setMessages((prev) => [...prev, assistantMessage]);
-    } catch (error) {
+    } catch (error: any) {
       console.error("Chat error:", error);
+      
+      let errorMessage = "Sorry, I'm having trouble connecting. Please try again later.";
+      
+      if (error.code === "unauthenticated") {
+        errorMessage = "Authentication failed. Please refresh the page and try again.";
+      } else if (error.code === "permission-denied") {
+        errorMessage = "You don't have permission to use this feature.";
+      }
+      
       setMessages((prev) => [
         ...prev,
         {
           role: "assistant",
-          content: "Sorry, I'm having trouble connecting. Please try again later.",
+          content: errorMessage,
         },
       ]);
     } finally {
@@ -87,17 +101,18 @@ const AIChatbot = () => {
       {!isOpen && (
         <Button
           onClick={() => setIsOpen(true)}
-          className="fixed bottom-6 right-6 h-14 w-14 rounded-full shadow-lg z-50 bg-gradient-to-r from-violet-500 to-purple-500 hover:from-violet-600 hover:to-purple-600"
+          className="fixed bottom-6 sm:bottom-8 right-[5.5rem] sm:right-[13rem] h-12 w-12 sm:h-14 sm:w-14 rounded-full shadow-lg z-50 bg-gradient-to-r from-violet-500 to-purple-500 hover:from-violet-600 hover:to-purple-600"
           size="icon"
+          aria-label="Open AI Chat Assistant"
         >
-          <MessageCircle className="h-6 w-6" />
+          <MessageCircle className="h-5 w-5 sm:h-6 sm:w-6" />
           <span className="absolute -top-1 -right-1 h-4 w-4 bg-green-500 rounded-full animate-pulse" />
         </Button>
       )}
 
       {/* Chat Window */}
       {isOpen && (
-        <Card className="fixed bottom-6 right-6 w-[calc(100vw-3rem)] md:w-96 h-[600px] max-h-[80vh] shadow-2xl z-50 flex flex-col overflow-hidden border-2">
+        <Card className="fixed bottom-6 sm:bottom-8 right-4 sm:right-8 w-[calc(100vw-2rem)] sm:w-96 h-[600px] max-h-[80vh] shadow-2xl z-50 flex flex-col overflow-hidden border-2">
           {/* Header */}
           <div className="bg-gradient-to-r from-violet-500 to-purple-500 p-4 flex items-center justify-between">
             <div className="flex items-center gap-2">

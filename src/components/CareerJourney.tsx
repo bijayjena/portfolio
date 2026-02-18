@@ -3,7 +3,7 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import { MapPin, Briefcase, X } from "lucide-react";
+import { MapPin, Briefcase } from "lucide-react";
 import { experiences } from "@/data/experienceData";
 
 // Experiences are now imported from centralized data source
@@ -94,45 +94,37 @@ const TimelineNode = ({ experience, index }: { experience: any; index: number })
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-100px" }}
       transition={{ duration: 0.5, delay: index * 0.1 }}
-      className={`relative grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 items-center`}
+      className="relative"
     >
-      {/* Timeline Point/Icon (Center) */}
-      <div className="absolute left-8 md:left-1/2 -translate-x-1/2 flex flex-col items-center justify-center z-10 w-12 md:w-auto">
-        <div className={`w-12 h-12 md:w-16 md:h-16 rounded-2xl bg-gradient-to-br ${experience.color} p-0.5 shadow-lg shadow-primary/20 transform rotate-3 transition-transform hover:rotate-0`}>
-          <div className="w-full h-full bg-background rounded-2xl flex items-center justify-center border border-white/10 overflow-hidden">
-            {experience.customImage ? (
-              <img 
-                src={experience.customImage} 
-                alt={`${experience.title} icon`}
-                className="w-full h-full object-cover rounded-xl"
-              />
-            ) : (
-              <Icon className={`w-6 h-6 md:w-8 md:h-8 text-transparent bg-clip-text bg-gradient-to-br ${experience.color} fill-current`} />
-            )}
+      {/* Mobile Layout */}
+      <div className="md:hidden flex gap-4">
+        {/* Timeline Point/Icon */}
+        <div className="flex flex-col items-center flex-shrink-0">
+          <div className={`w-12 h-12 rounded-2xl bg-gradient-to-br ${experience.color} p-0.5 shadow-lg shadow-primary/20 transform rotate-3 transition-transform hover:rotate-0`}>
+            <div className="w-full h-full bg-background rounded-2xl flex items-center justify-center border border-white/10 overflow-hidden">
+              {experience.customImage ? (
+                <img 
+                  src={experience.customImage} 
+                  alt={`${experience.title} icon`}
+                  className="w-full h-full object-cover rounded-xl"
+                />
+              ) : (
+                <Icon className={`w-6 h-6 text-transparent bg-clip-text bg-gradient-to-br ${experience.color} fill-current`} />
+              )}
+            </div>
+          </div>
+          <div className="mt-2 bg-background/80 backdrop-blur px-2 py-0.5 rounded text-[10px] font-bold border border-primary/20 uppercase tracking-wider text-muted-foreground whitespace-nowrap">
+            Lvl {experience.level}
           </div>
         </div>
-        <div className="mt-2 bg-background/80 backdrop-blur px-2 py-0.5 rounded text-[10px] font-bold border border-primary/20 uppercase tracking-wider text-muted-foreground">
-          Lvl {experience.level}
-        </div>
-      </div>
 
-      {/* Content Side */}
-      <div className={`
-        pl-20 md:pl-0 relative
-        ${isEven ? 'md:col-start-1 md:text-right md:pr-12' : 'md:col-start-2 md:text-left md:pl-12'}
-      `}>
-        <div className={`group relative ${isEven ? 'md:pr-12' : 'md:pl-12'}`}>
-
-          {/* Connector Line (Desktop) */}
-          <div className={`hidden md:block absolute top-[2rem] w-12 h-0.5 bg-border
-            ${isEven ? 'right-0' : 'left-0'} 
-          `} />
-
-          <Card className={`p-6 bg-card/50 backdrop-blur-sm hover:bg-card/80 transition-colors border-primary/10 hover:border-primary/30 group-hover:shadow-2xl group-hover:shadow-primary/10
+        {/* Content */}
+        <div className="flex-1 min-w-0">
+          <Card className={`p-6 bg-card/50 backdrop-blur-sm hover:bg-card/80 transition-colors border-primary/10 hover:border-primary/30 hover:shadow-2xl hover:shadow-primary/10
             ${experience.highlight ? 'border-primary shadow-lg shadow-primary/20' : ''}
           `}>
-            <div className={`flex flex-col gap-2 ${isEven ? 'md:items-end' : 'md:items-start'}`}>
-              <div className="flex items-center gap-2 mb-1">
+            <div className="flex flex-col gap-2">
+              <div className="flex items-center gap-2 mb-1 flex-wrap">
                 <span className={`text-xs font-bold px-2 py-1 rounded bg-gradient-to-r ${experience.color} text-white`}>
                   {experience.period}
                 </span>
@@ -145,21 +137,21 @@ const TimelineNode = ({ experience, index }: { experience: any; index: number })
                 {experience.title}
               </h3>
 
-              <div className={`flex items-center gap-1 text-sm font-medium text-muted-foreground ${isEven ? 'md:flex-row-reverse' : ''}`}>
-                <Briefcase className="w-4 h-4" />
-                {experience.company}
+              <div className="flex items-center gap-1 text-sm font-medium text-muted-foreground">
+                <Briefcase className="w-4 h-4 flex-shrink-0" />
+                <span className="truncate">{experience.company}</span>
               </div>
 
-              <div className={`flex items-center gap-1 text-xs text-muted-foreground/80 ${isEven ? 'md:flex-row-reverse' : ''}`}>
-                <MapPin className="w-3 h-3" />
+              <div className="flex items-center gap-1 text-xs text-muted-foreground/80">
+                <MapPin className="w-3 h-3 flex-shrink-0" />
                 {experience.location}
               </div>
 
-              <p className={`text-sm text-foreground/80 mt-3 border-l-2 pl-3 ${isEven ? 'md:border-l-0 md:border-r-2 md:pl-0 md:pr-3' : 'border-primary/50'}`}>
+              <p className="text-sm text-foreground/80 mt-3 border-l-2 border-primary/50 pl-3">
                 {experience.description}
               </p>
 
-              {/* Achievements Preview */}
+              {/* Achievements */}
               <div className="mt-4 flex flex-wrap gap-2">
                 {(isExpanded ? experience.achievements : experience.achievements.slice(0, 2)).map((ach: string, i: number) => (
                   <Badge key={i} variant="secondary" className="text-[10px] font-normal leading-tight h-auto py-1">
@@ -178,51 +170,262 @@ const TimelineNode = ({ experience, index }: { experience: any; index: number })
               </div>
             </div>
           </Card>
+
+          {/* Certificate Image (Mobile) */}
+          {experience.certificateImage && (
+            <div className="mt-4">
+              <Dialog>
+                <DialogTrigger asChild>
+                  <div className="relative aspect-video rounded-xl overflow-hidden bg-muted/30 border border-white/10 cursor-pointer group/cert">
+                    <img 
+                      src={experience.certificateImage} 
+                      alt={`${experience.company} certificate`}
+                      className="w-full h-full object-cover transition-transform group-hover/cert:scale-105"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+                    <div className="absolute inset-0 bg-black/0 group-hover/cert:bg-black/10 transition-colors flex items-center justify-center">
+                      <div className="bg-white/20 backdrop-blur-sm rounded-full p-2 opacity-0 group-hover/cert:opacity-100 transition-opacity">
+                        <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
+                        </svg>
+                      </div>
+                    </div>
+                  </div>
+                </DialogTrigger>
+                <DialogContent className="max-w-4xl w-full p-0 bg-transparent border-none">
+                  <div className="relative">
+                    <img 
+                      src={experience.certificateImage} 
+                      alt={`${experience.company} certificate - Full view`}
+                      className="w-full h-auto max-h-[90vh] object-contain rounded-lg"
+                    />
+                  </div>
+                </DialogContent>
+              </Dialog>
+            </div>
+          )}
         </div>
       </div>
 
-      {/* Visual Side (Balance) */}
-      <div className={`hidden md:block 
-        ${isEven ? 'md:col-start-2 md:pl-12' : 'md:col-start-1 md:pr-12 md:text-right'}
-      `}>
-        <div className="relative aspect-video rounded-xl overflow-hidden bg-muted/30 border border-white/10 group-hover:border-primary/20 transition-colors flex items-center justify-center">
-          {experience.certificateImage ? (
-            <Dialog>
-              <DialogTrigger asChild>
-                <div className="w-full h-full cursor-pointer group/cert relative">
-                  <img 
-                    src={experience.certificateImage} 
-                    alt={`${experience.company} certificate`}
-                    className="w-full h-full object-cover transition-transform group-hover/cert:scale-105"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
-                  <div className="absolute inset-0 bg-black/0 group-hover/cert:bg-black/10 transition-colors flex items-center justify-center">
-                    <div className="bg-white/20 backdrop-blur-sm rounded-full p-2 opacity-0 group-hover/cert:opacity-100 transition-opacity">
-                      <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
-                      </svg>
-                    </div>
+      {/* Desktop Layout */}
+      <div className="hidden md:grid md:grid-cols-[1fr_auto_1fr] gap-8 items-start">
+        {/* Left Side */}
+        <div className={`${isEven ? 'order-1' : 'order-3'}`}>
+          {isEven ? (
+            // Content on left
+            <div className="text-right pr-8">
+              <Card className={`p-6 bg-card/50 backdrop-blur-sm hover:bg-card/80 transition-colors border-primary/10 hover:border-primary/30 hover:shadow-2xl hover:shadow-primary/10
+                ${experience.highlight ? 'border-primary shadow-lg shadow-primary/20' : ''}
+              `}>
+                <div className="flex flex-col gap-2 items-end">
+                  <div className="flex items-center gap-2 mb-1 flex-row-reverse">
+                    <span className={`text-xs font-bold px-2 py-1 rounded bg-gradient-to-r ${experience.color} text-white`}>
+                      {experience.period}
+                    </span>
+                    {experience.highlight && (
+                      <span className="text-[10px] animate-pulse font-bold text-primary border border-primary rounded px-1">ACTIVE</span>
+                    )}
+                  </div>
+
+                  <h3 className={`text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r ${experience.color}`}>
+                    {experience.title}
+                  </h3>
+
+                  <div className="flex items-center gap-1 text-sm font-medium text-muted-foreground flex-row-reverse">
+                    <Briefcase className="w-4 h-4" />
+                    {experience.company}
+                  </div>
+
+                  <div className="flex items-center gap-1 text-xs text-muted-foreground/80 flex-row-reverse">
+                    <MapPin className="w-3 h-3" />
+                    {experience.location}
+                  </div>
+
+                  <p className="text-sm text-foreground/80 mt-3 border-r-2 border-primary/50 pr-3">
+                    {experience.description}
+                  </p>
+
+                  <div className="mt-4 flex flex-wrap gap-2 justify-end">
+                    {(isExpanded ? experience.achievements : experience.achievements.slice(0, 2)).map((ach: string, i: number) => (
+                      <Badge key={i} variant="secondary" className="text-[10px] font-normal leading-tight h-auto py-1">
+                        {ach}
+                      </Badge>
+                    ))}
+                    {experience.achievements.length > 2 && (
+                      <Badge 
+                        variant="outline" 
+                        className="text-[10px] cursor-pointer hover:bg-primary hover:text-primary-foreground transform transition-all active:scale-95"
+                        onClick={() => setIsExpanded(!isExpanded)}
+                      >
+                        {isExpanded ? 'Show less' : `+${experience.achievements.length - 2} more quests`}
+                      </Badge>
+                    )}
                   </div>
                 </div>
-              </DialogTrigger>
-              <DialogContent className="max-w-4xl w-full p-0 bg-transparent border-none">
-                <div className="relative">
-                  <img 
-                    src={experience.certificateImage} 
-                    alt={`${experience.company} certificate - Full view`}
-                    className="w-full h-auto max-h-[90vh] object-contain rounded-lg"
-                  />
-                </div>
-              </DialogContent>
-            </Dialog>
+              </Card>
+            </div>
           ) : (
-            <>
-              {/* Placeholder for future images */}
-              <div className={`absolute inset-0 bg-gradient-to-br ${experience.color} opacity-5 group-hover:opacity-10 transition-opacity`} />
-              <Icon className={`w-16 h-16 opacity-20 group-hover:opacity-30 transition-opacity bg-clip-text text-transparent bg-gradient-to-br ${experience.color} fill-current`} />
-              {/* Decoration */}
-              <div className="absolute inset-0 bg-grid-white/[0.05]" />
-            </>
+            // Visual on left
+            <div className="pl-8">
+              <div className="relative aspect-video rounded-xl overflow-hidden bg-muted/30 border border-white/10 hover:border-primary/20 transition-colors flex items-center justify-center">
+                {experience.certificateImage ? (
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <div className="w-full h-full cursor-pointer group/cert relative">
+                        <img 
+                          src={experience.certificateImage} 
+                          alt={`${experience.company} certificate`}
+                          className="w-full h-full object-cover transition-transform group-hover/cert:scale-105"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+                        <div className="absolute inset-0 bg-black/0 group-hover/cert:bg-black/10 transition-colors flex items-center justify-center">
+                          <div className="bg-white/20 backdrop-blur-sm rounded-full p-2 opacity-0 group-hover/cert:opacity-100 transition-opacity">
+                            <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
+                            </svg>
+                          </div>
+                        </div>
+                      </div>
+                    </DialogTrigger>
+                    <DialogContent className="max-w-4xl w-full p-0 bg-transparent border-none">
+                      <div className="relative">
+                        <img 
+                          src={experience.certificateImage} 
+                          alt={`${experience.company} certificate - Full view`}
+                          className="w-full h-auto max-h-[90vh] object-contain rounded-lg"
+                        />
+                      </div>
+                    </DialogContent>
+                  </Dialog>
+                ) : (
+                  <>
+                    <div className={`absolute inset-0 bg-gradient-to-br ${experience.color} opacity-5 hover:opacity-10 transition-opacity`} />
+                    <Icon className={`w-16 h-16 opacity-20 hover:opacity-30 transition-opacity bg-clip-text text-transparent bg-gradient-to-br ${experience.color} fill-current`} />
+                    <div className="absolute inset-0 bg-grid-white/[0.05]" />
+                  </>
+                )}
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Center - Timeline Point */}
+        <div className="order-2 flex flex-col items-center justify-start pt-2">
+          <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${experience.color} p-0.5 shadow-lg shadow-primary/20 transform rotate-3 transition-transform hover:rotate-0`}>
+            <div className="w-full h-full bg-background rounded-2xl flex items-center justify-center border border-white/10 overflow-hidden">
+              {experience.customImage ? (
+                <img 
+                  src={experience.customImage} 
+                  alt={`${experience.title} icon`}
+                  className="w-full h-full object-cover rounded-xl"
+                />
+              ) : (
+                <Icon className={`w-8 h-8 text-transparent bg-clip-text bg-gradient-to-br ${experience.color} fill-current`} />
+              )}
+            </div>
+          </div>
+          <div className="mt-2 bg-background/80 backdrop-blur px-2 py-0.5 rounded text-[10px] font-bold border border-primary/20 uppercase tracking-wider text-muted-foreground whitespace-nowrap">
+            Lvl {experience.level}
+          </div>
+        </div>
+
+        {/* Right Side */}
+        <div className={`${isEven ? 'order-3' : 'order-1'}`}>
+          {isEven ? (
+            // Visual on right
+            <div className="pl-8">
+              <div className="relative aspect-video rounded-xl overflow-hidden bg-muted/30 border border-white/10 hover:border-primary/20 transition-colors flex items-center justify-center">
+                {experience.certificateImage ? (
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <div className="w-full h-full cursor-pointer group/cert relative">
+                        <img 
+                          src={experience.certificateImage} 
+                          alt={`${experience.company} certificate`}
+                          className="w-full h-full object-cover transition-transform group-hover/cert:scale-105"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+                        <div className="absolute inset-0 bg-black/0 group-hover/cert:bg-black/10 transition-colors flex items-center justify-center">
+                          <div className="bg-white/20 backdrop-blur-sm rounded-full p-2 opacity-0 group-hover/cert:opacity-100 transition-opacity">
+                            <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
+                            </svg>
+                          </div>
+                        </div>
+                      </div>
+                    </DialogTrigger>
+                    <DialogContent className="max-w-4xl w-full p-0 bg-transparent border-none">
+                      <div className="relative">
+                        <img 
+                          src={experience.certificateImage} 
+                          alt={`${experience.company} certificate - Full view`}
+                          className="w-full h-auto max-h-[90vh] object-contain rounded-lg"
+                        />
+                      </div>
+                    </DialogContent>
+                  </Dialog>
+                ) : (
+                  <>
+                    <div className={`absolute inset-0 bg-gradient-to-br ${experience.color} opacity-5 hover:opacity-10 transition-opacity`} />
+                    <Icon className={`w-16 h-16 opacity-20 hover:opacity-30 transition-opacity bg-clip-text text-transparent bg-gradient-to-br ${experience.color} fill-current`} />
+                    <div className="absolute inset-0 bg-grid-white/[0.05]" />
+                  </>
+                )}
+              </div>
+            </div>
+          ) : (
+            // Content on right
+            <div className="text-left pl-8">
+              <Card className={`p-6 bg-card/50 backdrop-blur-sm hover:bg-card/80 transition-colors border-primary/10 hover:border-primary/30 hover:shadow-2xl hover:shadow-primary/10
+                ${experience.highlight ? 'border-primary shadow-lg shadow-primary/20' : ''}
+              `}>
+                <div className="flex flex-col gap-2 items-start">
+                  <div className="flex items-center gap-2 mb-1">
+                    <span className={`text-xs font-bold px-2 py-1 rounded bg-gradient-to-r ${experience.color} text-white`}>
+                      {experience.period}
+                    </span>
+                    {experience.highlight && (
+                      <span className="text-[10px] animate-pulse font-bold text-primary border border-primary rounded px-1">ACTIVE</span>
+                    )}
+                  </div>
+
+                  <h3 className={`text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r ${experience.color}`}>
+                    {experience.title}
+                  </h3>
+
+                  <div className="flex items-center gap-1 text-sm font-medium text-muted-foreground">
+                    <Briefcase className="w-4 h-4" />
+                    {experience.company}
+                  </div>
+
+                  <div className="flex items-center gap-1 text-xs text-muted-foreground/80">
+                    <MapPin className="w-3 h-3" />
+                    {experience.location}
+                  </div>
+
+                  <p className="text-sm text-foreground/80 mt-3 border-l-2 border-primary/50 pl-3">
+                    {experience.description}
+                  </p>
+
+                  <div className="mt-4 flex flex-wrap gap-2">
+                    {(isExpanded ? experience.achievements : experience.achievements.slice(0, 2)).map((ach: string, i: number) => (
+                      <Badge key={i} variant="secondary" className="text-[10px] font-normal leading-tight h-auto py-1">
+                        {ach}
+                      </Badge>
+                    ))}
+                    {experience.achievements.length > 2 && (
+                      <Badge 
+                        variant="outline" 
+                        className="text-[10px] cursor-pointer hover:bg-primary hover:text-primary-foreground transform transition-all active:scale-95"
+                        onClick={() => setIsExpanded(!isExpanded)}
+                      >
+                        {isExpanded ? 'Show less' : `+${experience.achievements.length - 2} more quests`}
+                      </Badge>
+                    )}
+                  </div>
+                </div>
+              </Card>
+            </div>
           )}
         </div>
       </div>
