@@ -1,6 +1,6 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 
-const GEMINI_API_KEY = process.env.VITE_GEMINI_API_KEY || process.env.GEMINI_API_KEY;
+const GEMINI_API_KEY = process.env.VITE_GEMINI_API_KEY;
 
 const PROFILE_CONTEXT = `
 You are an AI assistant representing Bijay Jena, a Full Stack Developer and Associate Team Lead at Squbix Digital.

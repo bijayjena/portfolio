@@ -5,8 +5,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
-import { httpsCallable } from "firebase/functions";
-import { functions, ensureAuthenticated } from "@/lib/firebase";
 
 interface Message {
   role: "user" | "assistant";
@@ -51,39 +49,27 @@ const AIChatbot = () => {
     setIsLoading(true);
 
     try {
-      // Ensure user is authenticated (anonymous)
-      await ensureAuthenticated();
-
-      // Call Firebase Cloud Function
-      const chatWithGemini = httpsCallable(functions, "chatWithGemini");
-      
-      const result = await chatWithGemini({
-        message: userMessage,
-        history: messages,
+      const response = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: userMessage, history: messages }),
       });
 
-      const data = result.data as { response: string };
+      if (!response.ok) throw new Error("Failed to get response");
+
+      const data = await response.json();
       const assistantMessage: Message = {
         role: "assistant",
         content: data.response,
       };
       setMessages((prev) => [...prev, assistantMessage]);
-    } catch (error: any) {
+    } catch (error) {
       console.error("Chat error:", error);
-      
-      let errorMessage = "Sorry, I'm having trouble connecting. Please try again later.";
-      
-      if (error.code === "unauthenticated") {
-        errorMessage = "Authentication failed. Please refresh the page and try again.";
-      } else if (error.code === "permission-denied") {
-        errorMessage = "You don't have permission to use this feature.";
-      }
-      
       setMessages((prev) => [
         ...prev,
         {
           role: "assistant",
-          content: errorMessage,
+          content: "Sorry, I'm having trouble connecting. Please try again later.",
         },
       ]);
     } finally {
