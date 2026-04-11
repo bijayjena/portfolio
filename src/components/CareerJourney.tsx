@@ -51,7 +51,7 @@ const CareerJourney = () => {
         <div className="absolute left-4 md:left-1/2 top-4 bottom-4 w-1 bg-muted -translate-x-1/2 hidden md:block" />
         <motion.div
           style={{ height: lineHeight }}
-          className="absolute left-4 md:left-1/2 top-4 w-1 bg-gradient-to-b from-primary via-purple-500 to-blue-500 -translate-x-1/2 hidden md:block origin-top"
+          className="absolute left-4 md:left-1/2 top-4 w-1 bg-gradient-to-b from-primary via-sky-500 to-cyan-500 -translate-x-1/2 hidden md:block origin-top"
         />
 
         {/* Mobile Line */}
@@ -72,7 +72,7 @@ const CareerJourney = () => {
           transition={{ delay: 0.5 }}
           className="flex justify-center mt-12"
         >
-          <div className="bg-gradient-to-br from-primary to-purple-600 p-1 rounded-full animate-pulse ring-4 ring-primary/20">
+          <div className="bg-gradient-to-br from-primary to-cyan-600 p-1 rounded-full animate-pulse ring-4 ring-primary/20">
             <Badge className="px-6 py-2 bg-background/50 backdrop-blur-md text-foreground border-none text-lg">
               Current Level: {experiences[experiences.length - 1].title}
             </Badge>

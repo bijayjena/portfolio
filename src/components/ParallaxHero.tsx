@@ -1,13 +1,12 @@
-import { useEffect, useState, useRef, lazy, Suspense } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Github, Linkedin, Mail, Phone, Download } from "lucide-react";
 import heroBg from "@/assets/hero-bg.jpg";
+import logo from "@/assets/logo.png";
 import { getExperienceDurationString } from "@/data/experienceData";
 import { useReducedMotion } from "@/hooks/useMediaQuery";
-
-// Lazy load the 3D visualization for better initial load
-const TechStackVisualization = lazy(() => import("@/components/TechStackVisualization"));
+import { profileData } from "@/data/profileData";
 
 const ParallaxHero = () => {
   const [scrollY, setScrollY] = useState(0);
@@ -112,19 +111,17 @@ const ParallaxHero = () => {
                   transform: prefersReducedMotion ? 'none' : `translateY(${-scrollY * 0.1}px)`,
                 }}
               >
-                <Suspense 
-                  fallback={
-                    <div className="w-64 h-64 md:w-80 md:h-80 lg:w-96 lg:h-96 rounded-lg overflow-hidden bg-gradient-to-br from-slate-900 to-slate-800 flex items-center justify-center animate-pulse">
-                      <p className="text-white text-sm">Loading...</p>
-                    </div>
-                  }
-                >
-                  <TechStackVisualization />
-                </Suspense>
-                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg pointer-events-none" />
+                <div className="w-64 h-64 md:w-80 md:h-80 lg:w-96 lg:h-96 rounded-3xl overflow-hidden bg-gradient-to-br from-[#161b22] to-[#0d1117] border border-white/10 shadow-2xl flex items-center justify-center p-6 sm:p-8">
+                  <img
+                    src={logo}
+                    alt="Bijay Jena logo"
+                    className="w-full h-full object-contain drop-shadow-[0_0_30px_rgba(88,166,255,0.18)] transition-transform duration-300 group-hover:scale-105"
+                  />
+                </div>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-3xl pointer-events-none" />
                 <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
                   <p className="text-white text-sm font-medium bg-black/50 px-3 py-1 rounded-full backdrop-blur-sm">
-                    Interactive Tech Stack
+                    Bijay Jena
                   </p>
                 </div>
               </div>
@@ -140,19 +137,21 @@ const ParallaxHero = () => {
                 }}
               >
                 Hi, I'm<br />
-                <span className="gradient-text">Bijay Jena</span>
+                <span className="gradient-text">{profileData.personalInfo.name}</span>
               </h1>
               <div className="flex flex-col gap-2 mb-4">
                 <p className="text-lg sm:text-xl md:text-2xl text-muted-foreground">
-                  Application Engineer & Full Stack Developer
+                  {profileData.personalInfo.headline}
+                </p>
+                <p className="text-sm sm:text-base md:text-lg text-primary/90">
+                  {profileData.personalInfo.tagline}
                 </p>
                 <p className="text-base sm:text-lg md:text-xl font-medium text-primary">
                   {experienceString} of Experience
                 </p>
               </div>
               <p className="text-base sm:text-lg text-muted-foreground mb-8 max-w-2xl mx-auto lg:mx-0">
-                Specializing in React, React Native, and AI integration. Building scalable solutions
-                that transform healthcare and drive innovation.
+                {profileData.professionalSummary[0]}
               </p>
 
               <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center lg:justify-start mb-8">
@@ -166,7 +165,7 @@ const ParallaxHero = () => {
 
               <div className="flex gap-3 sm:gap-4 justify-center lg:justify-start flex-wrap">
                 <a
-                  href="https://github.com/bijayjena"
+                  href={profileData.personalInfo.github}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="p-3 rounded-full bg-card hover:bg-primary hover:scale-110 transition-all duration-300 shadow-lg hover:shadow-primary/50"
@@ -175,7 +174,7 @@ const ParallaxHero = () => {
                   <Github className="w-5 h-5 sm:w-6 sm:h-6" />
                 </a>
                 <a
-                  href="https://linkedin.com/in/bijayjena"
+                  href={profileData.personalInfo.linkedin}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="p-3 rounded-full bg-card hover:bg-primary hover:scale-110 transition-all duration-300 shadow-lg hover:shadow-primary/50"
@@ -184,7 +183,7 @@ const ParallaxHero = () => {
                   <Linkedin className="w-5 h-5 sm:w-6 sm:h-6" />
                 </a>
                 <a
-                  href="mailto:bijayjenaofficial@gmail.com"
+                  href={`mailto:${profileData.personalInfo.email}`}
                   className="p-3 rounded-full bg-card hover:bg-primary hover:scale-110 transition-all duration-300 shadow-lg hover:shadow-primary/50"
                   aria-label="Email"
                 >

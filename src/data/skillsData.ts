@@ -1,148 +1,341 @@
-
 export interface Skill {
   name: string;
   icon: string;
-  category: "Frontend" | "Backend" | "AI & LLMs" | "DevOps & Tools" | "Architecture" | "Data & Analytics";
+  category:
+    | "Frontend"
+    | "Backend"
+    | "AI & LLMs"
+    | "DevOps & Tools"
+    | "Architecture"
+    | "Security & Auth"
+    | "Platform & Delivery"
+    | "Performance"
+    | "Data & Analytics";
   analysis: string;
   relatedProjects: string[];
 }
 
 export const skillsData: Skill[] = [
-  // Frontend
   {
     name: "React.js",
     icon: "https://cdn.simpleicons.org/react",
     category: "Frontend",
-    analysis: "Used extensively in the HIS Billing Module to build a complex, interactive UI. Leveraged for state management and component reusability across the portfolio and dashboard applications.",
-    relatedProjects: ["Hospital Information System", "Portfolio", "Sqwallet"]
+    analysis: "Core framework across SquMed HMIS, Vigilend, and Augastam HMIS for complex product interfaces and scalable frontend architecture.",
+    relatedProjects: ["SquMed HMIS", "Vigilend", "Augastam HMIS"],
   },
   {
     name: "React Native",
     icon: "https://cdn.simpleicons.org/react",
     category: "Frontend",
-    analysis: "Core framework for developing Sqwallet, Chasi, and MediClub mobile applications. Implemented cross-platform logic and native module bridging for the Offline Messaging System.",
-    relatedProjects: ["Sqwallet", "Chasi & MediClub Apps", "Offline Messaging System"]
+    analysis: "Used for mobile delivery across healthcare and fintech products including Bluetooth-enabled offline workflows.",
+    relatedProjects: ["SquMed HMIS", "rn-bluetooth-connect"],
   },
   {
-    name: "Redux Toolkit",
+    name: "RTK Query",
     icon: "https://cdn.simpleicons.org/redux",
     category: "Frontend",
-    analysis: "Implemented in HIS for predictable state management of large-scale billing data, ensuring data consistency and optimized re-renders.",
-    relatedProjects: ["Hospital Information System"]
+    analysis: "Supports scalable client-side data fetching and cache-aware frontend workflows.",
+    relatedProjects: ["Augastam HMIS", "SquMed HMIS"],
   },
   {
-    name: "Expo",
-    icon: "https://cdn.simpleicons.org/expo",
+    name: "TanStack Query",
+    icon: "https://cdn.simpleicons.org/reactquery",
     category: "Frontend",
-    analysis: "Streamlined the development and deployment process for Chasi and MediClub, enabling rapid iteration and over-the-air updates.",
-    relatedProjects: ["Chasi & MediClub Apps"]
+    analysis: "Used in fintech product work to manage async state and server synchronization cleanly.",
+    relatedProjects: ["Vigilend"],
   },
   {
-    name: "Material UI",
-    icon: "https://cdn.simpleicons.org/mui",
+    name: "React Hook Form",
+    icon: "https://cdn.simpleicons.org/reacthookform",
     category: "Frontend",
-    analysis: " utilized for quick UI prototyping and consistent design systems in internal tools and dashboard interfaces.",
-    relatedProjects: ["Hospital Information System"]
+    analysis: "Useful in form-heavy healthcare systems with configurable workflows and validation requirements.",
+    relatedProjects: ["Augastam HMIS", "SquMed HMIS"],
   },
   {
-    name: "TypeScript",
-    icon: "https://cdn.simpleicons.org/typescript",
+    name: "Zod",
+    icon: "https://cdn.simpleicons.org/zod",
     category: "Frontend",
-    analysis: "Adopted for type safety and better developer experience across recent React and Node.js projects, reducing runtime errors.",
-    relatedProjects: ["Portfolio", "Hospital Information System"]
+    analysis: "Helps keep form and API boundaries reliable through runtime-safe validation.",
+    relatedProjects: ["Vigilend", "SquMed HMIS"],
   },
   {
     name: "Tailwind CSS",
     icon: "https://cdn.simpleicons.org/tailwindcss",
     category: "Frontend",
-    analysis: "Used for rapid styling and responsive design in the Portfolio website, enabling a custom and modern aesthetic.",
-    relatedProjects: ["Portfolio"]
+    analysis: "Used for fast, composable UI development and design consistency.",
+    relatedProjects: ["Portfolio", "Vigilend"],
   },
-
-  // Backend
+  {
+    name: "shadcn/ui",
+    icon: "https://ui.shadcn.com/favicon.ico",
+    category: "Frontend",
+    analysis: "Speeds up polished UI delivery while still allowing product-specific customization.",
+    relatedProjects: ["Portfolio", "Vigilend"],
+  },
+  {
+    name: "Framer Motion",
+    icon: "https://cdn.simpleicons.org/framer",
+    category: "Frontend",
+    analysis: "Supports refined motion and interaction design in modern frontend experiences.",
+    relatedProjects: ["Portfolio"],
+  },
+  {
+    name: "Webpack",
+    icon: "https://cdn.simpleicons.org/webpack",
+    category: "Frontend",
+    analysis: "Important for advanced frontend build workflows and module federation-based setups.",
+    relatedProjects: ["SquMed HMIS", "Augastam HMIS"],
+  },
+  {
+    name: "Rollup",
+    icon: "https://cdn.simpleicons.org/rollupdotjs",
+    category: "Frontend",
+    analysis: "Relevant to library-style packaging and optimized build workflows.",
+    relatedProjects: ["rn-bluetooth-connect"],
+  },
+  {
+    name: "Vite",
+    icon: "https://cdn.simpleicons.org/vite",
+    category: "Frontend",
+    analysis: "Used for fast local development and streamlined modern frontend builds.",
+    relatedProjects: ["Portfolio"],
+  },
   {
     name: "Node.js",
     icon: "https://cdn.simpleicons.org/nodedotjs",
     category: "Backend",
-    analysis: "Powered the backend of the Patient-Doctor Application, handling API requests, authentication, and business logic efficiently.",
-    relatedProjects: ["Patient-Doctor Application", "Medbot"]
+    analysis: "Foundation for backend services, API orchestration, and full-stack product delivery.",
+    relatedProjects: ["SquMed HMIS", "Augastam HMIS"],
+  },
+  {
+    name: "NestJS",
+    icon: "https://cdn.simpleicons.org/nestjs",
+    category: "Backend",
+    analysis: "Used in fintech systems that benefit from strong structure, modularity, and maintainable service design.",
+    relatedProjects: ["Vigilend"],
   },
   {
     name: "Express.js",
     icon: "https://cdn.simpleicons.org/express",
     category: "Backend",
-    analysis: "Framework of choice for building RESTful APIs in the Patient-Doctor system, middleware management, and routing.",
-    relatedProjects: ["Patient-Doctor Application"]
+    analysis: "Supports REST API delivery and flexible service composition in full-stack applications.",
+    relatedProjects: ["Patient-Doctor App", "Portfolio API"],
+  },
+  {
+    name: "Swagger/OpenAPI",
+    icon: "https://cdn.simpleicons.org/swagger",
+    category: "Backend",
+    analysis: "Improves API collaboration, testing, and backend clarity across teams.",
+    relatedProjects: ["Vigilend", "SquMed HMIS"],
+  },
+  {
+    name: "PostgreSQL",
+    icon: "https://cdn.simpleicons.org/postgresql",
+    category: "Backend",
+    analysis: "Used in fintech workflows that require structured relational data and compliance-oriented modelling.",
+    relatedProjects: ["Vigilend"],
+  },
+  {
+    name: "Redis",
+    icon: "https://cdn.simpleicons.org/redis",
+    category: "Backend",
+    analysis: "Relevant for caching and service performance in scalable backend systems.",
+    relatedProjects: ["Vigilend", "SquMed HMIS"],
   },
   {
     name: "Firebase",
     icon: "https://cdn.simpleicons.org/firebase",
     category: "Backend",
-    analysis: "Utilized for real-time databases and authentication in Chasi, MediClub, and the Patient-Doctor App, ensuring instant data sync.",
-    relatedProjects: ["Patient-Doctor Application", "Chasi & MediClub Apps"]
+    analysis: "Used for rapid delivery, real-time workflows, and secure product integrations.",
+    relatedProjects: ["SquMed HMIS", "Patient-Doctor App"],
   },
   {
-    name: "MongoDB",
-    icon: "https://cdn.simpleicons.org/mongodb",
+    name: "Drizzle ORM",
+    icon: "https://orm.drizzle.team/favicon.ico",
     category: "Backend",
-    analysis: "NoSQL database used for storing flexible and scalable data for the Patient-Doctor logs and records.",
-    relatedProjects: ["Patient-Doctor Application"]
+    analysis: "Adds type-safe database access in modern backend services.",
+    relatedProjects: ["Vigilend"],
   },
-  
-  // AI & LLMs
   {
-    name: "OpenAI API",
+    name: "Dapr",
+    icon: "https://cdn.simpleicons.org/dapr",
+    category: "Backend",
+    analysis: "Supports distributed service patterns and microservice-style system design.",
+    relatedProjects: ["Vigilend"],
+  },
+  {
+    name: "Cursor",
+    icon: "https://cursor.com/favicon.ico",
+    category: "AI & LLMs",
+    analysis: "Used daily in AI-assisted development workflows to accelerate implementation and iteration speed.",
+    relatedProjects: ["All Projects"],
+  },
+  {
+    name: "Claude",
+    icon: "https://claude.ai/favicon.ico",
+    category: "AI & LLMs",
+    analysis: "Part of the practical AI-assisted engineering workflow for faster delivery and problem solving.",
+    relatedProjects: ["All Projects"],
+  },
+  {
+    name: "OpenAI Codex",
     icon: "https://openai.com/favicon.ico",
     category: "AI & LLMs",
-    analysis: "Integrated into Medbot for natural language understanding and generating medical responses.",
-    relatedProjects: ["Medbot - AI Medical Assistant"]
+    analysis: "Used as part of an AI-augmented development toolkit and integration ecosystem.",
+    relatedProjects: ["All Projects"],
   },
-   {
+  {
+    name: "Whisper Speech-to-text",
+    icon: "https://openai.com/favicon.ico",
+    category: "AI & LLMs",
+    analysis: "Applied to voice-to-EMR and conversational healthcare workflows.",
+    relatedProjects: ["SquMed HMIS", "Augastam HMIS"],
+  },
+  {
+    name: "OCR with Tesseract.js",
+    icon: "https://cdn.simpleicons.org/tesseract",
+    category: "AI & LLMs",
+    analysis: "Used for document parsing and structured extraction in healthcare workflows.",
+    relatedProjects: ["SquMed HMIS"],
+  },
+  {
+    name: "Clinical AI",
+    icon: "https://openai.com/favicon.ico",
+    category: "AI & LLMs",
+    analysis: "Includes DDI checks, dosage recommendations, and conversational clinical tooling.",
+    relatedProjects: ["SquMed HMIS"],
+  },
+  {
+    name: "Microservices Architecture",
+    icon: "https://cdn.simpleicons.org/nginx",
+    category: "Architecture",
+    analysis: "Used for scalable backend design where bounded services and distributed workflows matter.",
+    relatedProjects: ["Vigilend", "SquMed HMIS"],
+  },
+  {
+    name: "Monorepo",
+    icon: "https://cdn.simpleicons.org/turborepo",
+    category: "Architecture",
+    analysis: "Supports shared tooling and reusable architecture across web and mobile codebases.",
+    relatedProjects: ["SquMed HMIS"],
+  },
+  {
+    name: "Module Federation",
+    icon: "https://cdn.simpleicons.org/webpack",
+    category: "Architecture",
+    analysis: "Important for modular micro-frontend delivery and shared component systems.",
+    relatedProjects: ["SquMed HMIS", "Augastam HMIS"],
+  },
+  {
+    name: "JWT Authentication",
+    icon: "https://jwt.io/img/favicon/favicon-16x16.png",
+    category: "Security & Auth",
+    analysis: "Used to secure API access and user sessions in production systems.",
+    relatedProjects: ["SquMed HMIS", "Vigilend"],
+  },
+  {
+    name: "RBAC",
+    icon: "https://cdn.simpleicons.org/auth0",
+    category: "Security & Auth",
+    analysis: "Critical for role-sensitive access in healthcare and compliance-heavy environments.",
+    relatedProjects: ["SquMed HMIS", "Augastam HMIS"],
+  },
+  {
+    name: "Docker",
+    icon: "https://cdn.simpleicons.org/docker",
+    category: "DevOps & Tools",
+    analysis: "Supports consistent local and deployment workflows across services and environments.",
+    relatedProjects: ["Vigilend", "SquMed HMIS"],
+  },
+  {
+    name: "GitHub Actions",
+    icon: "https://cdn.simpleicons.org/githubactions",
+    category: "DevOps & Tools",
+    analysis: "Used to automate CI/CD and engineering workflows.",
+    relatedProjects: ["All Projects"],
+  },
+  {
+    name: "Nginx",
+    icon: "https://cdn.simpleicons.org/nginx",
+    category: "DevOps & Tools",
+    analysis: "Used to implement reverse proxy based dual-app deployment for healthcare systems.",
+    relatedProjects: ["Augastam HMIS"],
+  },
+  {
+    name: "AWS",
+    icon: "https://cdn.simpleicons.org/amazonwebservices",
+    category: "DevOps & Tools",
+    analysis: "Part of the cloud toolkit spanning EC2, S3, and Lambda-backed workflows.",
+    relatedProjects: ["rn-bluetooth-connect", "MetaMUI"],
+  },
+  {
+    name: "Oracle Cloud",
+    icon: "/oracle-cloud.svg",
+    category: "DevOps & Tools",
+    analysis: "Included in the cloud stack and reinforced through Oracle certifications.",
+    relatedProjects: ["Infrastructure & Certifications"],
+  },
+  {
+    name: "Electron",
+    icon: "https://cdn.simpleicons.org/electron",
+    category: "Platform & Delivery",
+    analysis: "Part of the broader platform delivery toolkit for desktop-capable product experiences.",
+    relatedProjects: ["Internal Product Prototypes"],
+  },
+  {
+    name: "Feature Flags",
+    icon: "/feature-flags.svg",
+    category: "Platform & Delivery",
+    analysis: "Useful for controlled rollout and safer product iteration.",
+    relatedProjects: ["SquMed HMIS", "Vigilend"],
+  },
+  {
+    name: "Code Splitting",
+    icon: "https://cdn.simpleicons.org/javascript",
+    category: "Performance",
+    analysis: "Applied to keep frontend bundles fast and responsive.",
+    relatedProjects: ["Augastam HMIS", "Portfolio"],
+  },
+  {
+    name: "Virtualisation",
+    icon: "https://cdn.simpleicons.org/react",
+    category: "Performance",
+    analysis: "Key part of the EMR optimization work that cut load time from 1.5 seconds to 0.7 seconds.",
+    relatedProjects: ["Augastam HMIS"],
+  },
+  {
+    name: "Memoisation",
+    icon: "https://cdn.simpleicons.org/react",
+    category: "Performance",
+    analysis: "Used to reduce expensive rerenders and improve interaction performance in dense product UIs.",
+    relatedProjects: ["Augastam HMIS"],
+  },
+  {
+    name: "API Caching",
+    icon: "https://cdn.simpleicons.org/cloudflare",
+    category: "Performance",
+    analysis: "Used to improve perceived and real application performance across product modules.",
+    relatedProjects: ["Augastam HMIS", "SquMed HMIS"],
+  },
+  {
     name: "Python",
     icon: "https://cdn.simpleicons.org/python",
-    category: "Data & Analytics", // Moving Python to Data/AI context
-    analysis: "Used for scripting data analysis tasks and implementing AI model logic for Medbot backend services.",
-    relatedProjects: ["Medbot - AI Medical Assistant", "Data Analytics Scripts"]
+    category: "Data & Analytics",
+    analysis: "Part of the secondary data toolkit supporting analytics and experimentation workflows.",
+    relatedProjects: ["AI-Powered Data Specialisation"],
   },
-
-  // DevOps & Tools
-  {
-    name: "Git",
-    icon: "https://cdn.simpleicons.org/git",
-    category: "DevOps & Tools",
-    analysis: "Essential for version control across all projects, managing branches, and collaboration.",
-    relatedProjects: ["All Projects"]
-  },
-  {
-    name: "Postman",
-    icon: "https://cdn.simpleicons.org/postman",
-    category: "DevOps & Tools",
-    analysis: "Used for testing and documenting REST APIs for the HIS and Patient-Doctor applications.",
-    relatedProjects: ["Patient-Doctor Application", "HIS"]
-  },
-  {
-    name: "Figma",
-    icon: "https://cdn.simpleicons.org/figma",
-    category: "DevOps & Tools",
-    analysis: "Designed UI/UX mockups for the Portfolio and Mobile Apps before implementation.",
-    relatedProjects: ["Portfolio", "Sqwallet"]
-  },
-
-  // Architecture
-  {
-    name: "Micro-frontend",
-    icon: "https://cdn.simpleicons.org/webpack", // using webpack icon for federation/micro-frontend
-    category: "Architecture",
-    analysis: "Architectural pattern explored for scaling large web applications like the HIS system.",
-    relatedProjects: ["Hospital Information System"]
-  },
-  
-  // Data
   {
     name: "SQL",
     icon: "https://cdn.simpleicons.org/mysql",
     category: "Data & Analytics",
-    analysis: "Querying relational data for meaningful insights and reporting in various backend modules.",
-    relatedProjects: ["Hospital Information System"]
-  }
+    analysis: "Supports data querying, reporting, and relational thinking across application work.",
+    relatedProjects: ["Vigilend", "AI-Powered Data Specialisation"],
+  },
+  {
+    name: "Power BI",
+    icon: "https://cdn.simpleicons.org/powerbi",
+    category: "Data & Analytics",
+    analysis: "Used for reporting and visualization in the broader data stack.",
+    relatedProjects: ["AI-Powered Data Specialisation"],
+  },
 ];

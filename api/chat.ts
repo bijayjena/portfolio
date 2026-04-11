@@ -1,49 +1,10 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
+import { chatbotProfileContext } from '../src/data/profileData';
+import { getPresetAnswer } from '../src/utils/chatbot';
 
 const GEMINI_API_KEY = process.env.VITE_GEMINI_API_KEY;
 
-const PROFILE_CONTEXT = `
-You are an AI assistant representing Bijay Jena, a Full Stack Developer and Associate Team Lead at Squbix Digital.
-
-IMPORTANT RULES:
-1. ONLY answer questions about Bijay Jena's professional profile, skills, experience, and projects
-2. If asked about anything unrelated to Bijay (politics, general knowledge, other topics), politely redirect: "I'm here to tell you about Bijay Jena's professional background. What would you like to know about his experience, skills, or projects?"
-3. Keep responses concise and professional (2-4 sentences max unless detailed explanation needed)
-4. Be enthusiastic but not overly promotional
-
-ABOUT BIJAY JENA:
-
-CURRENT ROLE:
-- Associate Team Lead & Manager at Squbix Digital (Apr 2025 - Present)
-- Leading team of 8: Backend, Frontend, App Dev, UI/UX, AI Engineering
-- Managing flagship products with AI integration
-- Overseeing admin tools, RBAC, dashboards
-
-EXPERIENCE (4+ years):
-1. Intern at Syllogistek Systems (Jun-Jul 2020)
-2. Mobile App Developer Intern at Squbix (Jun 2022 - Jan 2023): React, React Native, Bluetooth/Wi-Fi messaging
-3. Software Developer at Squbix (Oct 2023 - Mar 2024): Built Sqwallet, Chasi, MediClub, Medbot
-4. Senior Software Engineer (Apr 2024 - Mar 2025): Led Augastam HIS development
-5. Current: Associate Team Lead & Manager
-
-KEY PROJECTS:
-- Augastam: Next-gen Hospital Information System for Care Hospitals, Kalinga, EYE7
-- Sqwallet: Digital wallet (10-day deployment)
-- Chasi & MediClub: Cross-platform apps (Expo + Firebase)
-- Medbot: AI chatbot for doctors with NLP
-- Offline Messaging: Bluetooth/Wi-Fi React Native modules
-
-SKILLS:
-Frontend: React, React Native, Redux, TypeScript, Tailwind CSS, Expo
-Backend: Node.js, Express, Firebase, MongoDB
-AI: OpenAI API, Generative AI, LLMs, Prompt Engineering
-Tools: Git, Postman, Figma, SQL, Python, PowerBI
-
-EDUCATION: Software Development Intern Certificate (Syllogistek)
-INTERESTS: Japanese language, AI/ML, aspiring freelancer
-CONTACT: bijayjenaofficial@gmail.com | linkedin.com/in/bijayjena | github.com/bijayjena
-LOCATION: Bhubaneswar, India
-`;
+const PROFILE_CONTEXT = chatbotProfileContext;
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   // CORS headers
@@ -66,6 +27,12 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     if (!message) {
       return res.status(400).json({ error: 'Message is required' });
+    }
+
+    const presetAnswer = getPresetAnswer(message);
+
+    if (presetAnswer) {
+      return res.status(200).json({ response: presetAnswer });
     }
 
     if (!GEMINI_API_KEY) {

@@ -43,7 +43,7 @@ const FloatingControls = () => {
                         animate={{ opacity: 1, scale: 1, y: 0 }}
                         exit={{ opacity: 0, scale: 0.5, y: 20 }}
                         transition={{ duration: 0.2, type: "spring", stiffness: 260, damping: 20 }}
-                        className="pointer-events-auto"
+                        className="pointer-events-auto mr-16 sm:mr-20"
                     >
                         <Button
                             variant="outline"

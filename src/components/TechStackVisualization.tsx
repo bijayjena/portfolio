@@ -34,10 +34,13 @@ function TechItem({
   const categoryColors: Record<string, string> = {
     'Frontend': '#61DAFB',
     'Backend': '#68A063',
-    'AI & LLMs': '#FF6B6B',
-    'DevOps & Tools': '#FFA726',
-    'Architecture': '#9C27B0',
-    'Data & Analytics': '#2196F3'
+    'AI & LLMs': '#D19A66',
+    'DevOps & Tools': '#E5C07B',
+    'Architecture': '#4FC1FF',
+    'Security & Auth': '#56B6C2',
+    'Platform & Delivery': '#ABB2BF',
+    'Performance': '#98C379',
+    'Data & Analytics': '#4AA5F0'
   };
 
   return (

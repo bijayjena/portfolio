@@ -2,17 +2,17 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Rocket, Brain, Users, Target } from "lucide-react";
 import { AnimatedSection, FadeIn, StaggerContainer, StaggerItem } from "./AnimatedSection";
-import { calculateTotalExperience, getExperienceDurationString } from "@/data/experienceData";
+import { getExperienceDurationString } from "@/data/experienceData";
+import { profileData } from "@/data/profileData";
 
 const About = () => {
-  // Calculate experience dynamically
   const experienceString = getExperienceDurationString();
 
   const highlights = [
-    { icon: Users, label: "Team of 8", desc: "Backend, Frontend, App, UI/UX, AI" },
-    { icon: Rocket, label: experienceString, desc: "Professional Experience" },
-    { icon: Brain, label: "AI Integration", desc: "Healthcare & Products" },
-    { icon: Target, label: "Full-Stack", desc: "Web, Mobile & Backend" },
+    { icon: Users, label: "Team of 8", desc: "Cross-functional leadership" },
+    { icon: Rocket, label: experienceString, desc: "End-to-end product delivery" },
+    { icon: Brain, label: "AI in Production", desc: "Healthcare & fintech systems" },
+    { icon: Target, label: "Senior Scope", desc: "Architecture to execution" },
   ];
 
   return (
@@ -24,7 +24,6 @@ const About = () => {
           </h2>
         </FadeIn>
 
-        {/* Highlight cards */}
         <StaggerContainer className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
           {highlights.map((item, i) => (
             <StaggerItem key={i}>
@@ -40,20 +39,26 @@ const About = () => {
         <FadeIn delay={0.2}>
           <Card className="p-8">
             <p className="text-lg text-muted-foreground leading-relaxed mb-6">
-              As a <span className="text-foreground font-semibold">Software Developer at Squbix Digital</span>, I'm deeply immersed in the world of technology and software development. My journey began with web and React Native development during an enriching internship, leading me to my current role as <span className="text-foreground font-semibold">Associate Team Lead & Manager</span> where I thrive on creating innovative solutions and pushing boundaries.
+              {profileData.objective}
             </p>
-          <div className="text-lg text-muted-foreground leading-relaxed mb-6">
-              From building foundational products like <Badge variant="outline" className="mx-1">Sqwallet</Badge> <Badge variant="outline" className="mx-1">Chasi</Badge> <Badge variant="outline" className="mx-1">MediClub</Badge> <Badge variant="outline" className="mx-1">Medbot</Badge> to leading the development of <span className="text-foreground font-semibold">Augastam</span> – a next-gen Hospital Information System for major healthcare chains like Care Hospitals, Kalinga Hospitals, and EYE7 – I've grown from an intern to leading a team of 8 engineers.
-            </div>
+            <p className="text-lg text-muted-foreground leading-relaxed mb-6">
+              {profileData.professionalSummary[0]} {profileData.professionalSummary[1]}
+            </p>
             <p className="text-lg text-muted-foreground leading-relaxed">
-              My multidisciplinary background in <span className="text-foreground font-semibold">Python, SQL, PowerBI, and Big Data</span> allows me to bring a unique perspective. My insatiable curiosity drives me to continually explore new tools and technologies, working towards my dream of becoming a versatile freelancer and successful business owner.
+              In my current role as <span className="text-foreground font-semibold">{profileData.experience[3].role}</span> at{" "}
+              <span className="text-foreground font-semibold">{profileData.experience[3].company}</span>, I work across React,
+              React Native, Node.js, NestJS, architecture design, and applied AI to deliver production systems in healthcare SaaS
+              and fintech. My recent work includes SquMed HMIS, Vigilend, Augastam HMIS, and Bluetooth-based offline fintech tooling.
             </p>
 
             <div className="flex flex-wrap gap-2 mt-6 pt-6 border-t border-border">
-              <Badge>Generative AI</Badge>
-              <Badge>LLMs</Badge>
-              <Badge>Prompt Engineering</Badge>
-              <Badge variant="secondary">Japanese (Elementary)</Badge>
+              <Badge>React.js</Badge>
+              <Badge>React Native</Badge>
+              <Badge>NestJS</Badge>
+              <Badge>Node.js</Badge>
+              <Badge>Micro-frontends</Badge>
+              <Badge>Whisper</Badge>
+              <Badge variant="secondary">System Design</Badge>
             </div>
           </Card>
         </FadeIn>

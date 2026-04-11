@@ -5,11 +5,88 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
+import { getPresetAnswer, PROFILE_CONTEXT } from "@/utils/chatbot";
+import type { ReactNode } from "react";
 
 interface Message {
   role: "user" | "assistant";
   content: string;
 }
+
+const renderInlineMarkdown = (text: string): ReactNode[] => {
+  const tokens = text.split(/(\*\*[^*]+\*\*|`[^`]+`|\*[^*]+\*)/g).filter(Boolean);
+
+  return tokens.map((token, index) => {
+    if (token.startsWith("**") && token.endsWith("**")) {
+      return <strong key={index} className="font-semibold">{token.slice(2, -2)}</strong>;
+    }
+
+    if (token.startsWith("`") && token.endsWith("`")) {
+      return (
+        <code
+          key={index}
+          className="rounded bg-black/10 px-1.5 py-0.5 text-[0.85em] font-mono"
+        >
+          {token.slice(1, -1)}
+        </code>
+      );
+    }
+
+    if (token.startsWith("*") && token.endsWith("*")) {
+      return <em key={index} className="italic">{token.slice(1, -1)}</em>;
+    }
+
+    return token;
+  });
+};
+
+const MarkdownMessage = ({ content }: { content: string }) => {
+  const lines = content.replace(/\r/g, "").split("\n");
+  const blocks: Array<{ type: "paragraph" | "list"; content: string | string[] }> = [];
+  let currentList: string[] = [];
+
+  const flushList = () => {
+    if (currentList.length > 0) {
+      blocks.push({ type: "list", content: currentList });
+      currentList = [];
+    }
+  };
+
+  lines.forEach((line) => {
+    const trimmed = line.trim();
+
+    if (!trimmed) {
+      flushList();
+      return;
+    }
+
+    if (/^[-*]\s+/.test(trimmed)) {
+      currentList.push(trimmed.replace(/^[-*]\s+/, ""));
+      return;
+    }
+
+    flushList();
+    blocks.push({ type: "paragraph", content: trimmed });
+  });
+
+  flushList();
+
+  return (
+    <div className="space-y-2 text-sm leading-relaxed">
+      {blocks.map((block, index) =>
+        block.type === "list" ? (
+          <ul key={index} className="list-disc pl-5 space-y-1">
+            {(block.content as string[]).map((item, itemIndex) => (
+              <li key={itemIndex}>{renderInlineMarkdown(item)}</li>
+            ))}
+          </ul>
+        ) : (
+          <p key={index}>{renderInlineMarkdown(block.content as string)}</p>
+        )
+      )}
+    </div>
+  );
+};
 
 const SUGGESTED_QUESTIONS = [
   "What is Bijay's experience?",
@@ -19,7 +96,10 @@ const SUGGESTED_QUESTIONS = [
   "What are his AI skills?",
 ];
 
+const GEMINI_MODEL = "gemini-2.5-flash";
+
 const AIChatbot = () => {
+  const geminiApiKey = import.meta.env.VITE_GEMINI_API_KEY;
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
     {
@@ -49,27 +129,90 @@ const AIChatbot = () => {
     setIsLoading(true);
 
     try {
-      const response = await fetch("/api/chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: userMessage, history: messages }),
-      });
+      const presetAnswer = getPresetAnswer(userMessage);
 
-      if (!response.ok) throw new Error("Failed to get response");
+      if (presetAnswer) {
+        console.info("Chatbot preset answer used for suggested question:", userMessage);
+        setMessages((prev) => [...prev, { role: "assistant", content: presetAnswer }]);
+        return;
+      }
+
+      if (!geminiApiKey) {
+        throw new Error("Gemini API key is not configured in the Vite client env");
+      }
+
+      console.info("Calling Gemini directly from client:", GEMINI_MODEL);
+
+      const contents = [
+        {
+          role: "user",
+          parts: [{ text: PROFILE_CONTEXT }],
+        },
+        {
+          role: "model",
+          parts: [{ text: "Understood. I will only answer questions about Bijay Jena's professional profile and redirect any off-topic questions." }],
+        },
+        ...messages.map((msg) => ({
+          role: msg.role === "assistant" ? "model" : "user",
+          parts: [{ text: msg.content }],
+        })),
+        {
+          role: "user",
+          parts: [{ text: userMessage }],
+        },
+      ];
+
+      const response = await fetch(
+        `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "x-goog-api-key": geminiApiKey,
+          },
+          body: JSON.stringify({
+            contents,
+            generationConfig: {
+              temperature: 0.7,
+              topK: 40,
+              topP: 0.95,
+              maxOutputTokens: 1024,
+            },
+          }),
+        }
+      );
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(errorText || "Failed to get Gemini response");
+      }
 
       const data = await response.json();
+      const content = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+
+      if (!content) {
+        throw new Error("Invalid Gemini response");
+      }
+
       const assistantMessage: Message = {
         role: "assistant",
-        content: data.response,
+        content,
       };
       setMessages((prev) => [...prev, assistantMessage]);
     } catch (error) {
       console.error("Chat error:", error);
+      const errorMessage =
+        error instanceof Error
+          ? error.message.includes("Gemini API key")
+            ? "Gemini API key is not loaded in the browser. Restart the dev server after updating your .env file."
+            : `Gemini request failed: ${error.message}`
+          : "Sorry, I'm having trouble connecting. Please try again later.";
+
       setMessages((prev) => [
         ...prev,
         {
           role: "assistant",
-          content: "Sorry, I'm having trouble connecting. Please try again later.",
+          content: errorMessage,
         },
       ]);
     } finally {
@@ -87,7 +230,7 @@ const AIChatbot = () => {
       {!isOpen && (
         <Button
           onClick={() => setIsOpen(true)}
-          className="fixed bottom-6 sm:bottom-8 right-[5.5rem] sm:right-[13rem] h-12 w-12 sm:h-14 sm:w-14 rounded-full shadow-lg z-50 bg-gradient-to-r from-violet-500 to-purple-500 hover:from-violet-600 hover:to-purple-600"
+          className="fixed bottom-24 sm:bottom-28 right-4 sm:right-8 h-12 w-12 sm:h-14 sm:w-14 rounded-full shadow-lg z-50 bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-600 hover:to-blue-700"
           size="icon"
           aria-label="Open AI Chat Assistant"
         >
@@ -100,7 +243,7 @@ const AIChatbot = () => {
       {isOpen && (
         <Card className="fixed bottom-6 sm:bottom-8 right-4 sm:right-8 w-[calc(100vw-2rem)] sm:w-96 h-[600px] max-h-[80vh] shadow-2xl z-50 flex flex-col overflow-hidden border-2">
           {/* Header */}
-          <div className="bg-gradient-to-r from-violet-500 to-purple-500 p-4 flex items-center justify-between">
+          <div className="bg-gradient-to-r from-sky-500 to-blue-600 p-4 flex items-center justify-between">
             <div className="flex items-center gap-2">
               <Sparkles className="h-5 w-5 text-white" />
               <div>
@@ -132,11 +275,11 @@ const AIChatbot = () => {
                   className={cn(
                     "max-w-[80%] rounded-lg p-3",
                     msg.role === "user"
-                      ? "bg-gradient-to-r from-violet-500 to-purple-500 text-white"
+                      ? "bg-gradient-to-r from-sky-500 to-blue-600 text-white"
                       : "bg-muted"
                   )}
                 >
-                  <p className="text-sm whitespace-pre-wrap">{msg.content}</p>
+                  <MarkdownMessage content={msg.content} />
                 </div>
               </div>
             ))}
@@ -186,7 +329,7 @@ const AIChatbot = () => {
                 type="submit"
                 size="icon"
                 disabled={!input.trim() || isLoading}
-                className="bg-gradient-to-r from-violet-500 to-purple-500"
+                className="bg-gradient-to-r from-sky-500 to-blue-600"
               >
                 <Send className="h-4 w-4" />
               </Button>

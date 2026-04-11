@@ -3,29 +3,30 @@ import { Button } from "@/components/ui/button";
 import { Mail, Phone, Linkedin, Github } from "lucide-react";
 import { motion } from "framer-motion";
 import { AnimatedSection, FadeIn, StaggerContainer, StaggerItem } from "./AnimatedSection";
+import { profileData } from "@/data/profileData";
 
 const contactLinks = [
   {
-    href: "mailto:bijayjenaofficial@gmail.com",
+    href: `mailto:${profileData.personalInfo.email}`,
     icon: Mail,
     label: "Email",
-    value: "bijayjenaofficial@gmail.com",
+    value: profileData.personalInfo.email,
   },
   {
     href: "tel:+916371303113",
     icon: Phone,
     label: "Phone",
-    value: "+91-6371303113",
+    value: profileData.personalInfo.phone,
   },
   {
-    href: "https://linkedin.com/in/bijayjena",
+    href: profileData.personalInfo.linkedin,
     icon: Linkedin,
     label: "LinkedIn",
     value: "linkedin.com/in/bijayjena",
     external: true,
   },
   {
-    href: "https://github.com/bijayjena",
+    href: profileData.personalInfo.github,
     icon: Github,
     label: "GitHub",
     value: "github.com/bijayjena",
@@ -46,7 +47,10 @@ const Contact = () => {
         <FadeIn delay={0.1}>
           <Card className="p-8">
             <p className="text-center text-lg text-muted-foreground mb-8">
-              I'm always open to discussing new opportunities, collaborations, or just having a chat about technology and innovation.
+              I'm open to application engineering, full-stack, React Native, and AI integration opportunities, as well as collaborations around scalable product development.
+            </p>
+            <p className="text-center text-sm text-primary mb-8">
+              {profileData.personalInfo.location}
             </p>
             
             <StaggerContainer className="grid md:grid-cols-2 gap-6">
@@ -79,7 +83,7 @@ const Contact = () => {
               transition={{ delay: 0.4, duration: 0.5 }}
             >
               <Button variant="hero" size="lg" asChild>
-                <a href="mailto:bijayjenaofficial@gmail.com">Send Message</a>
+                <a href={`mailto:${profileData.personalInfo.email}`}>Send Message</a>
               </Button>
             </motion.div>
           </Card>
