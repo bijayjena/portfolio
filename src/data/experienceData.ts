@@ -1,5 +1,11 @@
 import { Trophy, Briefcase, Cpu, Rocket, Gamepad2, LucideIcon } from "lucide-react";
 import { profileData } from "@/data/profileData";
+import syllogistekCertificate from "@/assets/syllogistek-certificate.png";
+import squbixLogo from "@/assets/squbix_logo.jpg";
+import squbixInternCertificate from "@/assets/squbix-intern-certificate.png";
+import sqbDiwali22 from "@/assets/sqbdiwali22.jpeg";
+import augastamImage from "@/assets/augastam.png";
+import squmedImage from "@/assets/squmed.jpg";
 
 export interface Experience {
     title: string;
@@ -35,7 +41,7 @@ export const experiences: Experience[] = [
         icon: Gamepad2,
         customImage:
             "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQbXuXVi-jpQ9ErAEwhoXOdszcd0oYlwA74uVgFBEF74tkCd-K9S4NCxvHnM-w&s&ec=121516174",
-        certificateImage: "/src/assets/syllogistek-certificate.png",
+        certificateImage: syllogistekCertificate,
     },
     {
         title: profileData.experience[0].role,
@@ -49,8 +55,8 @@ export const experiences: Experience[] = [
         achievements: profileData.experience[0].responsibilities,
         color: "from-sky-500 to-blue-500",
         icon: Rocket,
-        customImage: "/src/assets/squbix_logo.jpg",
-        certificateImage: "/src/assets/squbix-intern-certificate.png",
+        customImage: squbixLogo,
+        certificateImage: squbixInternCertificate,
     },
     {
         title: profileData.experience[1].role,
@@ -64,8 +70,8 @@ export const experiences: Experience[] = [
         achievements: profileData.experience[1].responsibilities,
         color: "from-orange-500 to-amber-500",
         icon: Briefcase,
-        customImage: "/src/assets/squbix_logo.jpg",
-        certificateImage: "/src/assets/sqbdiwali22.jpeg",
+        customImage: squbixLogo,
+        certificateImage: sqbDiwali22,
     },
     {
         title: profileData.experience[2].role,
@@ -79,8 +85,8 @@ export const experiences: Experience[] = [
         achievements: profileData.experience[2].responsibilities,
         color: "from-cyan-500 to-blue-500",
         icon: Cpu,
-        customImage: "/src/assets/squbix_logo.jpg",
-        certificateImage: "/src/assets/augastam.png",
+        customImage: squbixLogo,
+        certificateImage: augastamImage,
     },
     {
         title: profileData.experience[3].role,
@@ -95,8 +101,8 @@ export const experiences: Experience[] = [
         achievements: profileData.experience[3].responsibilities,
         color: "from-emerald-500 to-teal-500",
         icon: Trophy,
-        customImage: "/src/assets/squbix_logo.jpg",
-        certificateImage: "/src/assets/squmed.jpg",
+        customImage: squbixLogo,
+        certificateImage: squmedImage,
     },
 ];
 
